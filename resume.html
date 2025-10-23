@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhumitha K - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+            color: white;
+            padding: 50px 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: fadeIn 1s ease-out 0.6s both;
+            margin-bottom: 15px;
+        }
+
+        .header-contact {
+            font-size: 0.95em;
+            opacity: 0.95;
+            animation: fadeIn 1s ease-out 0.7s both;
+            line-height: 1.6;
+        }
+
+        .header-links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .header-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .download-section {
+            text-align: center;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .download-btn {
+  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.2s; }
+        .section:nth-child(2) { animation-delay: 0.4s; }
+        .section:nth-child(3) { animation-delay: 0.6s; }
+        .section:nth-child(4) { animation-delay: 0.8s; }
+        .section:nth-child(5) { animation-delay: 1s; }
+        .section:nth-child(6) { animation-delay: 1.2s; }
+        .section:nth-child(7) { animation-delay: 1.4s; }
+        .section:nth-child(8) { animation-delay: 1.6s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .summary-text {
+            line-height: 1.8;
+            color: #555;
+            text-align: justify;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .skill-category {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-category strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .experience-item, .project-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover, .project-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .job-title, .project-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .experience-item ul, .project-item ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .experience-item li, .project-item li {
+            margin-bottom: 8px;
+        }
+
+        .project-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        .education-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .degree {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .school {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cert-list, .achievement-list {
+            margin-left: 20px;
+            line-height: 2;
+            color: #555;
+        }
+
+        .cert-list li, .achievement-list li {
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .cert-list li:hover, .achievement-list li:hover {
+            transform: translateX(5px);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .download-section {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .content {
+                padding: 20px;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="resume">
+        <div class="header">
+            <div class="header-content">
+                <h1>Madhumitha K</h1>
+                <p class="subtitle">Full Stack Developer & Machine Learning Engineer</p>
+                <div class="header-contact">
+                    Erode, Tamil Nadu | 📧 mithamadhu8785@gmail.com | 📱 +91 84385 77395
+                </div>
+                <div class="header-links">
+                    <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+                    <a href="https://github.com" target="_blank">Github</a>
+                    <a href="https://leetcode.com" target="_blank">Leetcode</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <button class="download-btn" onclick="downloadResume()">
+                📥 Download Resume as PDF
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>Professional Summary</h2>
+                <p class="summary-text">
+                    Versatile and detail-oriented Full Stack Developer and Machine Learning Engineer with hands-on experience in building scalable, responsive web applications and deploying intelligent ML models. Adept at integrating frontend and backend technologies with data-driven solutions.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <strong>Languages:</strong>
+                        Python, JavaScript, TypeScript, SQL, Java
+                    </div>
+                    <div class="skill-category">
+                        <strong>Frontend:</strong>
+                        React.js, Next.js, HTML5, CSS3, Tailwind CSS, Redux
+                    </div>
+                    <div class="skill-category">
+                        <strong>Backend:</strong>
+                        Node.js, Express, Django, Flask, REST APIs, MERN-Stack
+                    </div>
+                    <div class="skill-category">
+                        <strong>ML/AI:</strong>
+                        TensorFlow, PyTorch, Scikit-learn, OpenCV, Pandas, NumPy
+                    </div>
+                    <div class="skill-category">
+                        <strong>Databases:</strong>
+                        MongoDB, PostgreSQL, MySQL, Firebase
+                    </div>
+                    <div class="skill-category">
+                        <strong>Tools & DevOps:</strong>
+                        Git, Docker, AWS, Linux, CI/CD, Jupyter Notebooks, Kubernetes
+                    </div>
+                    <div class="skill-category">
+                        <strong>Others:</strong>
+                        GraphQL, FastAPI, Rest API, Qwen, Nuextract, Langchain
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Professional Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="job-title">Full Stack Developer (Intern)</div>
+                    <div class="company">Kalv – UK</div>
+                    <div class="date">Dec 2024 – Present</div>
+                    <ul>
+                        <li>Developed clean, responsive UI layouts using HTML5, CSS3, and Tailwind CSS for scalable web interfaces.</li>
+                        <li>Created interactive, dynamic components with JavaScript and React.js to enhance user experience.</li>
+                        <li>Utilized Flexbox and Grid for modern, mobile-friendly designs.</li>
+                        <li>Collaborated closely with backend developers for seamless REST API integrations.</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="job-title">Machine Learning Engineer (Intern)</div>
+                    <div class="company">Cube AI – Coimbatore</div>
+                    <div class="date">May 2024 – July 2024</div>
+                    <ul>
+                        <li>Designed a hospital availability detection system integrating real-time doctor status updates via ML models.</li>
+                        <li>Preprocessed large healthcare datasets using Pandas and deployed models using Scikit-learn.</li>
+                        <li>Developed and deployed a YOLOv5-based object detection system using OpenCV for security monitoring.</li>
+                        <li>Deployed ML models as REST APIs using Flask and Docker for scalable application services.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Projects</h2>
+                
+                <div class="project-item">
+                    <div class="project-title">Automatic Time Table - Smart India Hackathon (SIH) 2025</div>
+                    <ul>
+                        <li>Designed and implemented an AI/ML-driven platform to analyze real-time data, detect anomalies, and generate alerts for enhanced decision-making.</li>
+                        <li>Project selected in Top 50 out of 300 projects for SIH.</li>
+                        <li>Designed the frontend UI/UX for smooth user interaction.</li>
+                        <li>Integrated the solution with backend APIs and database.</li>
+                        <li><a href="https://youtu.be/lexotDdNTqY?si=ShCV19snhkY7SB4u" target="_blank" class="project-link">View Project Demo</a></li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-title">Text-to-Image Generator</div>
+                    <ul>
+                        <li>Developed a deep learning model that generates images from text prompts using Diffusion Models / GANs.</li>
+                        <li>Implemented NLP preprocessing (tokenization, embeddings) to convert natural language input into visual features.</li>
+                        <li>Fine-tuned on curated datasets to produce high-quality and contextually accurate images.</li>
+                        <li>Built an interactive web app with Flask/React, enabling real-time text-to-image generation and downloads.</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-title">Voice-based Music Recommendation System</div>
+                    <ul>
+                        <li>Built an intelligent music recommendation system operating via voice interaction and NLP-based mood detection — similar to Alexa.</li>
+                        <li>When the similar person voice is recognized, based on the person mood it recommended the song from YouTube and similar sites.</li>
+                        <li>Built an Alexa-like conversational system that recommends music based on user mood and dialogue.</li>
+                        <li>Integrated NLP for conversation analysis and ML models for personalized recommendations.</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-title">Image Classifier</div>
+                    <ul>
+                        <li>Designed and trained a CNN for custom image classification tasks.</li>
+                        <li>Achieved 92% accuracy and deployed via FastAPI for public API access.</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-title">Bingo Game using Cursor AI</div>
+                    <ul>
+                        <li>Built a responsive, accessible UI using semantic HTML, modern CSS, and JavaScript—lightweight and framework-free.</li>
+                        <li>Developed in Cursor with GPT-5, focusing on scalable, maintainable code and planned features like multi-card support and sound effects.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Education</h2>
+                
+                <div class="education-item">
+                    <div class="degree">Bachelor of Engineering (B.E.) in Computer Science (AI & ML)</div>
+                    <div class="school">Dr. Mahalingam College of Engineering and Technology, Pollachi, Tamil Nadu</div>
+                    <div class="date">2023 – 2027 | CGPA: 8.3/10 (Semester-5)</div>
+                </div>
+
+                <div class="education-item">
+                    <div class="degree">Higher Secondary Certificate (HSC)</div>
+                    <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
+                    <div class="date">Percentage: 89%</div>
+                </div>
+
+                <div class="education-item">
+                    <div class="degree">Secondary School Leaving Certificate (SSLC)</div>
+                    <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
+                    <div class="date">Percentage: 84%</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Certifications</h2>
+                <ul class="cert-list">
+                    <li>Full Stack Web Development – Coursera / Udemy</li>
+                    <li>Python for Data Science and Machine Learning – Udemy</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Achievements</h2>
+                <ul class="achievement-list">
+                    <li><strong>3rd Prize Winner</strong> in Website Development (Frontend role) Competition at Dr. Mahalingam College of Engineering and Technology (2025)</li>
+                    <li><strong>3rd Prize</strong> by building a dynamic, responsive stock market web application using HTML, CSS, Python (backend), and MongoDB within a 2-hour timed challenge</li>
+                    <li><strong>1st Prize Winner (2 times)</strong> in Anna University Zoom 10 Technical Event</li>
+                    <li>Secured <strong>1st place</strong> in inter-college technical competitions organized by Anna University, showcasing strong problem-solving, web development, and coding skills</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadResume() {
+            const btn = document.querySelector('.download-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Generating PDF...';
+            btn.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                window.print();
+                btn.textContent = originalText;
+                btn.style.pointerEvents = 'auto';
+            }, 300);
+        }
+
+        // Add subtle parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            const scrolled = window.pageYOffset;
+            header.style.transform = `translateY(${scrolled * 0.3}px)`;
+        });
+    </script>
+</body>
+</html>

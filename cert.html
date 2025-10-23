@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Landing</title>
+   <div id="header"></div>
+  <script>
+  // Get the placeholder div
+  const headerContainer = document.getElementById('header');
+
+  // Fetch header.html
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+      headerContainer.innerHTML = data;
+
+      // Optional: add hover effect for cursor on links
+      const links = headerContainer.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+      });
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+ <div id="cursor" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script>
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let posX = mouseX, posY = mouseY;
+    const speed = 0.18;
+
+    // Load header first
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header").innerHTML = data;
+
+        // Add cursor hover to links/buttons after header loads
+        const interactive = document.querySelectorAll('a, button, .clickable');
+        interactive.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
+        });
+      });
+
+    // Smooth-follow cursor
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.classList.remove('cursor--hide');
+    });
+
+    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
+    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+
+    function raf() {
+      posX += (mouseX - posX) * speed;
+      posY += (mouseY - posY) * speed;
+      cursor.style.left = posX + 'px';
+      cursor.style.top = posY + 'px';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+   
+    window.addEventListener('mouseup', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+  </script>
+<style>
+  /* ========== GLOBAL STYLES ========== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* ========== PAGE 1 ========== */
+.page1 {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+.title {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-size: 32px;
+  font-weight: bold;
+  z-index: 50;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  pointer-events: auto;
+}
+
+.floating-websites {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 15px;
+  padding: 40px;
+  align-items: center;
+  justify-items: center;
+  pointer-events: none; /* avoid blocking button clicks */
+}
+
+.floating-websites .website-preview {
+  width: 120px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: auto; /* allow hover/click */
+}
+
+.floating-websites .website-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.floating-websites .website-preview:hover {
+  transform: scale(1.1);
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.center-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #26a1a5, #4b8ca2);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.center-button:hover {
+  transform: translate(-50%,-50%) scale(1.1);
+}
+
+.center-button.clicked {
+  top: 85%;
+  width: 140px;
+  height: 140px;
+  font-size: 18px;
+}
+
+/* Fade-out */
+.page-hidden {
+  opacity: 0;
+  transform: scale(0.8) translateY(100px);
+  pointer-events: none;
+  transition: all 1s cubic-bezier(0.4,0,0.2,1);
+  height: 0 !important;
+  overflow: hidden;
+}
+
+.floating-websites.hidden {
+  opacity: 0;
+  transform: scale(0.5) rotateX(90deg);
+  transition: all 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+.title.hidden {
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: all 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ========== PAGE 2 ========== */
+.page2-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  color: #ffffff;
+}
+
+.left-side {
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.left-side p {
+  font-size: 18px;
+  line-height: 1.6;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.left-side p::-webkit-scrollbar {
+  width: 8px;
+}
+
+.section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section h2 { 
+  margin-bottom: 10px; 
+}
+
+.right-side {
+  width: 50%;
+  height: 100%;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 80vh;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.image-container img.active {
+  display: block;
+  opacity: 1;
+}
+
+/* ========== RESPONSIVE MEDIA QUERY ========== */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto; /* allow mobile scroll */
+  }
+
+  .page2-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-side, .right-side {
+    width: 100%;
+    height: auto;
+    overflow: visible; /* remove scroll */
+    position: relative; /* remove sticky */
+  }
+
+  .right-side {
+    background: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* push image below text */
+  }
+
+  .image-container img {
+    max-width: 90%;
+    max-height: 400px;
+    display: block;
+    opacity: 1;
+    transition: none; /* optional: remove fade */
+  }
+
+  .section {
+    height: auto;
+    padding: 15px;
+  }
+
+  .left-side p {
+    overflow: visible;
+  }
+
+  /* Page1 floating websites responsive */
+  .floating-websites {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    padding: 20px;
+    top: 130px;
+  }
+
+  .website-preview {
+    width: 100px;
+    height: 70px;
+  }
+
+  .title {
+    font-size: 28px;
+    top: 20px;
+    left: 20px;
+  }
+
+  .center-button {
+    width: 150px;
+    height: 150px;
+    font-size: 18px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page1"><div class="title"></div>
+    
+    <div class="floating-websites">
+      <div class="website-preview"><img src="../logoo/a1.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a2.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a3.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a6.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a3.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a6.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a6.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a3.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a6.png" alt=""></div>
+    <div class="website-preview"><img src="../logoo/a6.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a7.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a3.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a4.png" alt=""></div>
+      <div class="website-preview"><img src="../logoo/a5.png" alt=""></div>
+    </div>
+    <button class="center-button" id="centerBtn">CLICK<br><img src="../logoo/hello.png"> ME</button>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page2-container" id="page2">
+    <div class="left-side">
+      <div class="section" data-image="image1">
+        <h2>Python (Beginner Level)</h2>
+        <p>Certificate in Python (Beginner Level)
+I successfully completed a certification course in Python for Beginners, where I gained a strong foundation in Python programming. Through this course, I learned essential concepts such as data types, control structures, functions, and object-oriented programming. This certification strengthened my programming logic and prepared me to apply Python in real-world projects, including data analysis and machine learning applications.
+<br>
+Additionally, I gained hands-on experience by working on practical exercises and mini-projects that enhanced my problem-solving skills. I also explored Python libraries such as NumPy and Pandas, which helped me understand data manipulation and analysis techniques. Completing this course has improved my coding efficiency, analytical thinking, and readiness to develop scalable and efficient Python-based solutions.        
+      </div>
+      <div class="section" data-image="image2">
+        <h2>Machine Learning with Fundamentals 101</h2>
+        <p>I successfully completed the Machine Learning with Fundamentals 101 course, where I built a solid understanding of the core principles of machine learning. The course covered essential topics such as data preprocessing, feature selection, model training, evaluation metrics, and optimization techniques.
+
+I worked extensively with tools and libraries like Python, Scikit-learn, NumPy, Pandas, Matplotlib, and Jupyter Notebook, which enhanced my ability to analyze datasets and develop predictive models. I also implemented algorithms such as Linear Regression, Logistic Regression, and K-Means Clustering, gaining practical experience in solving classification and clustering problems.
+
+This course not only strengthened my technical foundation but also improved my ability to handle real-world datasets, interpret model outputs, and optimize models for better accuracy and performance.</p>
+      </div>
+      <div class="section" data-image="image3">
+        <h2>Web Development Achievement</h2>
+        <p>I secured 3rd place in a web development competition where I developed a complete game development website within just 2 hours. This project demonstrated my ability to design and implement a full-stack application efficiently under tight deadlines while ensuring functionality and user experience.
+
+For the frontend, I used HTML, CSS, and JavaScript to create a responsive and interactive interface with smooth animations. The backend was built using Python with Django, and I integrated MongoDB for efficient database management and dynamic data handling. I implemented features such as user interaction, data storage, and real-time content updates, making the website fully functional and engaging.
+
+This achievement highlights my problem-solving skills, creativity, and technical proficiency in full-stack web development. It also reflects my ability to work under pressure, manage time effectively, and deliver high-quality web applications within limited timeframes..</p>
+      </div>
+      <div class="section" data-image="image4">
+        <h2>Cloud & DevOps Platform</h2>
+        <p>I participated in a Data Workshop focused on Cloud and DevOps platforms, where I gained hands-on experience in managing, deploying, and scaling applications in cloud environments. The workshop covered key concepts such as cloud computing fundamentals, CI/CD pipelines, containerization with Docker, version control with Git, and infrastructure automation.
+
+I learned how to deploy applications on cloud platforms, monitor performance, and implement DevOps best practices to ensure continuous integration and delivery. The workshop also included practical exercises on handling cloud storage, database management, and server orchestration, which enhanced my understanding of building scalable and reliable systems.
+
+This experience strengthened my technical skills in cloud technologies and DevOps workflows, preparing me to efficiently manage modern application deployment and data-driven projects.</p>
+      </div>
+      <div class="section" data-image="image5">
+        <h2>Introduction to Machine Learning</h2>
+        <p>I successfully completed the Introduction to Machine Learning course from Great Learning, where I gained a foundational understanding of machine learning concepts and their practical applications. The course covered key topics such as supervised and unsupervised learning, regression, classification, clustering, and model evaluation techniques.
+
+I gained hands-on experience working with Python, Scikit-learn, Pandas, and Matplotlib, implementing algorithms on real datasets to analyze patterns and make predictions. This course helped me strengthen my programming skills, data analysis capabilities, and understanding of how to apply machine learning techniques to solve real-world problems efficiently.</p>
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="image-container">
+        <img id="image1" src="../logoo/i3.png" class="active">
+        <img id="image2" src="../logoo/i2.png"> 
+           <img id="image3" src="../logoo/i1.png">
+          <img id="image4" src="../logoo/i4.png">
+          <img id="image5" src="../logoo/great.png">
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // PAGE 1 animations
+    const page1 = document.querySelector('.page1');
+    const floatingWebsites = document.querySelector('.floating-websites');
+    const title = document.querySelector('.title');
+    const centerButton = document.getElementById('centerBtn');
+    const page2 = document.getElementById('page2');
+    let isClicked = false;
+
+    document.addEventListener('mousemove', e => {
+      if (isClicked) return;
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      const rotateX = (y - 0.5) * 25;
+      const rotateY = (x - 0.5) * -25;
+      floatingWebsites.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    function smoothScrollTo(targetY, duration=1000) {
+      const startY = window.scrollY;
+      const diff = targetY - startY;
+      let start;
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const time = timestamp - start;
+        const percent = Math.min(time / duration, 1);
+        window.scrollTo(0, startY + diff * percent);
+        if (time < duration) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    centerButton.addEventListener('click', () => {
+      isClicked = true;
+      centerButton.classList.add('clicked');
+      floatingWebsites.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+      setTimeout(() => {
+        title.classList.add('hidden');
+        floatingWebsites.classList.add('hidden');
+
+        setTimeout(() => {
+          page1.classList.add('page-hidden');
+          smoothScrollTo(page2.offsetTop, 1200);
+        }, 1000);
+      }, 500);
+    });
+
+    // PAGE 2 intersection animations
+    const sections = document.querySelectorAll('.section');
+    const images = document.querySelectorAll('.image-container img');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const imageId = entry.target.getAttribute('data-image');
+          images.forEach(img => img.classList.toggle('active', img.id === imageId));
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

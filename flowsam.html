@@ -1,0 +1,93 @@
+<div class="page page-three">
+  <div class="card-track">
+    <!-- Original cards -->
+    <div class="flow-card">Card 1</div>
+    <div class="flow-card">Card 2</div>
+    <div class="flow-card">Card 3</div>
+    <div class="flow-card">Card 4</div>
+    <div class="flow-card">Card 5</div>
+    <div class="flow-card">Card 6</div>
+    <div class="flow-card">Card 7</div>
+    <div class="flow-card">Card 8</div>
+    <!-- Duplicate cards for seamless loop -->
+    <div class="flow-card">Card 1</div>
+    <div class="flow-card">Card 2</div>
+    <div class="flow-card">Card 3</div>
+    <div class="flow-card">Card 4</div>
+    <div class="flow-card">Card 5</div>
+    <div class="flow-card">Card 6</div>
+    <div class="flow-card">Card 7</div>
+    <div class="flow-card">Card 8</div>
+  </div>
+</div>
+<style>
+    /* Page container */
+.page-three {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Horizontal scrolling track */
+.card-track {
+  display: flex;
+  gap: 20px;
+  animation: horizontal-flow 12s linear infinite;
+}
+
+/* Pause animation on hover */
+.card-track:hover {
+  animation-play-state: paused;
+}
+
+/* Individual cards */
+.flow-card {
+  flex: 0 0 auto; /* no shrink */
+  width: 160px;
+  height: 110px;
+  background: linear-gradient(145deg, #1f4068, #162447);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: transform 0.7s ease, opacity 0.7s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect on cards */
+.flow-card:hover {
+  transform: scale(1.08) rotateY(10deg);
+  box-shadow: 0 0 25px rgba(123, 97, 255, 0.7),
+              0 0 40px rgba(255, 97, 179, 0.6);
+}
+
+/* Fade-in animation on page load */
+.flow-card.show-flow {
+  opacity: 3;
+  transform: translateX(0);
+}
+
+/* Horizontal scroll animation */
+@keyframes horizontal-flow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* moves half track width (original + duplicate) */
+}
+
+</style>
+<script>
+    const flowCards = document.querySelectorAll('.flow-card');
+
+flowCards.forEach((card, index) => {
+  setTimeout(() => {
+    card.classList.add('show-flow');
+  }, index * 150); // stagger fade-in
+});
+
+</script>

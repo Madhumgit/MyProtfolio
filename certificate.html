@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Landing</title>
+   <div id="header"></div>
+  <script>
+  // Get the placeholder div
+  const headerContainer = document.getElementById('header');
+
+  // Fetch header.html
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+      headerContainer.innerHTML = data;
+
+      // Optional: add hover effect for cursor on links
+      const links = headerContainer.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+      });
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+ <div id="cursor" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script>
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let posX = mouseX, posY = mouseY;
+    const speed = 0.18;
+
+    // Load header first
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header").innerHTML = data;
+
+        // Add cursor hover to links/buttons after header loads
+        const interactive = document.querySelectorAll('a, button, .clickable');
+        interactive.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
+        });
+      });
+
+    // Smooth-follow cursor
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.classList.remove('cursor--hide');
+    });
+
+    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
+    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+
+    function raf() {
+      posX += (mouseX - posX) * speed;
+      posY += (mouseY - posY) * speed;
+      cursor.style.left = posX + 'px';
+      cursor.style.top = posY + 'px';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+   
+    window.addEventListener('mouseup', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+  </script>
+  <style>
+    body {
+      margin: 0;
+     
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    /* ========== PAGE 1 ========== */
+    .page1 {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .title {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-size: 32px;
+      font-weight: bold;
+      z-index: 50;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .floating-websites {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 15px;
+      padding: 40px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .website-preview {
+      width: 120px;
+      height: 80px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .website-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .website-preview:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .center-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+      z-index: 100;
+    }
+
+    .center-button:hover {
+      transform: translate(-50%,-50%) scale(1.1);
+    }
+
+    .center-button.clicked {
+      top: 85%;
+      width: 140px;
+      height: 140px;
+      font-size: 18px;
+    }
+
+    /* Fade-out */
+    .page-hidden {
+      opacity: 0;
+      transform: scale(0.8) translateY(100px);
+      pointer-events: none;
+      transition: all 1s cubic-bezier(0.4,0,0.2,1);
+      height: 0 !important;
+      overflow: hidden;
+    }
+
+    .floating-websites.hidden {
+      opacity: 0;
+      transform: scale(0.5) rotateX(90deg);
+      transition: all 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .title.hidden {
+      opacity: 0;
+      transform: translateY(-50px);
+      transition: all 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ========== PAGE 2 ========== */
+    .page2-container {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      
+      color: #ffffff;
+    }
+    .left-side {
+      width: 70%;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #ccc;
+      padding: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section h2 { margin-bottom: 10px; }
+    .btn-3d {
+      padding: 12px 24px;
+      font-size: 1em;
+      color: #fff;
+      background: linear-gradient(135deg, #1a5a6d, #2a85a9);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .right-side {
+      width: 50%;
+      height: 100%;
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+    }
+    .image-container img {
+      max-width: 100%;
+      max-height: 80vh;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .image-container img.active {
+      display: block;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page1">
+    
+    <div class="floating-websites">
+      <div class="website-preview"><img src="img1.jpg" alt=""></div>
+      <div class="website-preview"><img src="img2.jpg" alt=""></div>
+      <div class="website-preview"><img src="img3.jpg" alt=""></div>
+      <div class="website-preview"><img src="img4.jpg" alt=""></div>
+      <div class="website-preview"><img src="img5.jpg" alt=""></div>
+      <div class="website-preview"><img src="img6.jpg" alt=""></div>
+      <div class="website-preview"><img src="img1.jpg" alt=""></div>
+      <div class="website-preview"><img src="img2.jpg" alt=""></div>
+      <div class="website-preview"><img src="img3.jpg" alt=""></div>
+      <div class="website-preview"><img src="img4.jpg" alt=""></div>
+      <div class="website-preview"><img src="img5.jpg" alt=""></div>
+      <div class="website-preview"><img src="img6.jpg" alt=""></div>
+      <div class="website-preview"><img src="img1.jpg" alt=""></div>
+      <div class="website-preview"><img src="img2.jpg" alt=""></div>
+      <div class="website-preview"><img src="img3.jpg" alt=""></div>
+      <div class="website-preview"><img src="img4.jpg" alt=""></div>
+      <div class="website-preview"><img src="img5.jpg" alt=""></div>
+      <div class="website-preview"><img src="img6.jpg" alt=""></div>
+      <div class="website-preview"><img src="img1.jpg" alt=""></div>
+      <div class="website-preview"><img src="img2.jpg" alt=""></div>
+      <div class="website-preview"><img src="img3.jpg" alt=""></div>
+      <div class="website-preview"><img src="img4.jpg" alt=""></div>
+      <div class="website-preview"><img src="img5.jpg" alt=""></div>
+      <div class="website-preview"><img src="img6.jpg" alt=""></div>
+    </div>
+    <button class="center-button" id="centerBtn">CLICK<br>ME</button>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page2-container" id="page2">
+    <div class="left-side">
+      <div class="section" data-image="image1">
+        <h2>Section 1</h2>
+        <p>This is the content for section 1.</p>
+        <button class="btn-3d">Explore Section 1</button>
+      </div>
+      <div class="section" data-image="image2">
+        <h2>Section 2</h2>
+        <p>This is the content for section 2.</p>
+        <button class="btn-3d">Explore Section 2</button>
+      </div>
+      <div class="section" data-image="image3">
+        <h2>Section 3</h2>
+        <p>This is the content for section 3.</p>
+        <button class="btn-3d">Explore Section 2</button>
+      </div>
+      <div class="section" data-image="image4">
+        <h2>Section 4</h2>
+        <p>This is the content for section 4.</p>
+        <button class="btn-3d">Explore Section 2</button>
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="image-container">
+<img id="image1"  src="screenshot1.png" class="active">
+<img id="image2" src="screenshot2.png" alt="Image 2" background="white">
+           <img id="image3" src="https://via.placeholder.com/400?text=Image+3">
+          <img id="image4" src="https://via.placeholder.com/400?text=Image+4">
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // PAGE 1 animations
+    const page1 = document.querySelector('.page1');
+    const floatingWebsites = document.querySelector('.floating-websites');
+    const title = document.querySelector('.title');
+    const centerButton = document.getElementById('centerBtn');
+    const page2 = document.getElementById('page2');
+    let isClicked = false;
+
+    document.addEventListener('mousemove', e => {
+      if (isClicked) return;
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      const rotateX = (y - 0.5) * 25;
+      const rotateY = (x - 0.5) * -25;
+      floatingWebsites.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    function smoothScrollTo(targetY, duration=1000) {
+      const startY = window.scrollY;
+      const diff = targetY - startY;
+      let start;
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const time = timestamp - start;
+        const percent = Math.min(time / duration, 1);
+        window.scrollTo(0, startY + diff * percent);
+        if (time < duration) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    centerButton.addEventListener('click', () => {
+      isClicked = true;
+      centerButton.classList.add('clicked');
+      floatingWebsites.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+      setTimeout(() => {
+        title.classList.add('hidden');
+        floatingWebsites.classList.add('hidden');
+
+        setTimeout(() => {
+          page1.classList.add('page-hidden');
+          smoothScrollTo(page2.offsetTop, 1200);
+        }, 1000);
+      }, 500);
+    });
+
+    // PAGE 2 intersection animations
+    const sections = document.querySelectorAll('.section');
+    const images = document.querySelectorAll('.image-container img');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const imageId = entry.target.getAttribute('data-image');
+          images.forEach(img => img.classList.toggle('active', img.id === imageId));
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

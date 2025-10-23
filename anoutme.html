@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Me - Madhumitha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div>
+          <div style="font-weight:800;letter-spacing:0.4px">MADHUMITHA</div>
+          <div style="font-size:12px;opacity:0.7;margin-top:2px">Full stack and Machine learning developer</div>
+        </div>
+      </div>
+
+      <nav class="he">
+       
+        <a href="Skill.html">Skill</a>
+        <a href="project.html">Projects</a>
+        <a href="experience.html">Experiments</a>
+        <a href="cert.html">Certificates</a>
+        
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+      <div class="hero">
+        
+  <!-- Left text block -->
+  <div class="text">
+    <div class="line"><span>A dedicated AI & Machine Learning Engineer and Full stack Developer 
+     with strong experience in building intelligent systems </span></div>
+    
+
+    <!-- Buttons under text -->
+    <div class="buttons">
+      <a href="../resume.html"><div class="btn btn-one"><span>RESUME</span></div></a>
+      <a href="../aboutme.html"><div class="btn btn-two"><span>ABOUT ME</span></div></a>
+    </div>
+  </div>
+
+  <!-- Right circle image -->
+  <div class="image">
+    <img src="../my photo.jpg" alt="Profile">
+  </div>
+</div>
+
+     
+    <!-- custom cursor element -->
+    <div id="cursor" aria-hidden="true"></div>
+  
+ 
+   
+    <div class="scroll-down" onclick="scrollToNext()">
+      <div class="mouse"></div>
+      <div class="arrow">↓</div>
+      <div>Click Me</div>
+    </div>
+  </section>
+
+
+
+<!--part 2 in home page-->
+
+  <section id="about">
+    <div class="container">
+        <div class="left-section">
+            <h1 class="colorful-title">About Me</h1>
+            <p class="about-content">
+
+  I’m a passionate AI & Machine Learning Engineer and Fullstack Developer with hands-on experience in building intelligent systems and modern web applications.I like to develop a ML models for innovative solutions or developing smooth, interactive websites with modern design and animations.
+           </p>
+        </div>
+        <div class="right-section">
+            <canvas id="three-canvas"></canvas>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 2 / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth / 2, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            color: 0x4ecdc4,
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
+        });
+        const sphere = new THREE.Points(geometry, material);
+        scene.add(sphere);
+
+        camera.position.z = 5;
+
+        const particles = new THREE.Group();
+        const particleGeometry = new THREE.SphereGeometry(0.02, 16, 16);
+        const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xff6b6b });
+        for (let i = 0; i < 100; i++) {
+            const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+            particle.position.set(
+                (Math.random() - 0.5) * 8,
+                (Math.random() - 0.5) * 8,
+                (Math.random() - 0.5) * 8
+            );
+            particles.add(particle);
+        }
+        scene.add(particles);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.002;
+            sphere.rotation.y += 0.003;
+            particles.rotation.y += 0.001;
+            particles.children.forEach(p => {
+                p.position.y += Math.sin(Date.now() * 0.001 + p.position.x) * 0.01;
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth / 2, window.innerHeight);
+            camera.aspect = window.innerWidth / 2 / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+  </section>
+
+ <script>
+    function scrollToNext() {
+      document.getElementById("about").scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
+
+
+
+  <!-- JavaScript -->
+<script>
+    // Smooth-follow cursor
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let posX = mouseX, posY = mouseY;
+    const speed = 0.18; // lower = slower follow
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.classList.remove('cursor--hide');
+    });
+
+    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
+    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+
+    function raf() {
+      posX += (mouseX - posX) * speed;
+      posY += (mouseY - posY) * speed;
+      cursor.style.left = posX + 'px';
+      cursor.style.top = posY + 'px';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // enlarge cursor on hover
+    const interactive = document.querySelectorAll('a, button, .clickable');
+    interactive.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+    });
+
+    // click pop effect
+    window.addEventListener('mousedown', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(0.85)';
+    });
+    window.addEventListener('mouseup', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+    // keyboard focus effect
+    interactive.forEach(el => {
+      el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
+      el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
+    });
+  </script>
+
+
+<div class="containers">
+    <h1 class="colorful-title">Contact Me</h1>
+    <div class="contact-form">
+        <form id="contactForm">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="_replyto" placeholder="Your Email" required>
+            <input class="cont" type="hidden" name="_subject" value="New Contact Form Submission">
+            <textarea class="mess" name="message" placeholder="Your Message" required></textarea>
+            <button class="submit" type="submit">Send Message</button>
+        </form>
+    </div>
+</div>
+
+<script>
+  // Get the form element
+  const form = document.getElementById('contactForm');
+
+  // Add submit event listener
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    // Gather form data
+    const formData = {
+      name: form.name.value,
+      _replyto: form._replyto.value,
+      message: form.message.value
+    };
+
+    try {
+      // Send data to Node.js backend
+      const res = await fetch('http://localhost:5000/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+      alert(data.message); // Show success/failure message
+
+      if(data.success){
+        form.reset(); // Clear the form on success
+      }
+
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+      console.error(err);
+    }
+  });
+</script>
+
+
+        <div class="social-links">
+            <a href="https://github.com/Madhumgit" target="_blank" title="GitHub">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" alt="GitHub">
+            </a>
+            <a href="https://www.linkedin.com/in/madhu-mitha-8bb72b2a1/" target="_blank" title="LinkedIn">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/linkedin.svg" alt="LinkedIn">
+            </a>
+            <a href="https://leetcode.com/u/madhuaiml01/" target="_blank" title="LeetCode">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/leetcode.svg" alt="LeetCode">
+            </a>
+            <a href="mithamadhu8785@gmail.com" title="Email">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/maildotru.svg" alt="Email">
+            </a>
+        </div>
+    </div>
+</body>
+</html>

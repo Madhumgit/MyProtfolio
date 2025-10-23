@@ -1,0 +1,498 @@
+<!DOCTYPE html><html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Page</title>
+   
+  <div id="header"></div>
+    
+
+
+<style>
+/* reset */
+* { box-sizing: border-box; margin: 0; padding: 0 }
+html, body, #app { height: 100% }
+head {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(170deg, #022a2a, #23727b);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  cursor: none; /* hide default cursor */
+}
+
+/* ====== Card Layout ====== */
+.card-container {
+  display: flex;
+  gap: 20px;
+}
+.contain2 {
+  margin-top: 50px;
+  margin-left: 0px;
+  display: flex;
+  gap: 20px;
+}
+#card3 {
+  margin-left: 20px;
+  margin-top: 30px;
+  width: 1000px;
+  display: block;
+}
+.card {
+  width: 500px;
+  background: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 500px;
+  top: 100px;
+  left: 80px;
+  gap: 40px;
+  color: #1a1a2e;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+.card:hover {
+  transform: translateY(-10px);
+  background-color: black;
+  color: whitesmoke;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+.card-img {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+.card1 .card-img { background-image:url('../logoo/Bingo.png'); }
+.card6 .card-img { background-image: url('../logoo/i.png'); }
+.card3 .card-img { background-image: url('../logoo/speak.png'); }
+.card4 .card-img { background-image: url('../logoo/SIH.png'); }
+.card2 .card-img { background-image: url('../logoo/gene.png'); }
+.card5 .card-img { background-image: url('../logoo/voice.png'); }
+.card-content { padding: 15px; position: relative; z-index: 1; }
+.tech-tags { display: flex; gap: 10px; margin-bottom: 10px; }
+.tech-tags span {
+  background: #1b3d50;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.tech-tags span:hover {
+  background: #1a1a2e;
+  color: #fff;
+}
+.card-text { font-size: 14px; margin-bottom: 15px; }
+.buttons { display: flex; gap: 10px; }
+.buttons a {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 12px;
+}
+.card:hover::before { opacity: 0.7; }
+.card:hover .card-img { filter: grayscale(0%); }
+
+/* Canvas/Blob */
+canvas { display: block; }
+#blob { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+
+/* ====== Media Queries ====== */
+
+/* Large tablets / small laptops */
+@media (max-width: 1024px) {
+  /* Header adjustments */
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 16px;
+  }
+
+  .brand {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  nav a {
+    font-size: 15px;
+    margin: 4px;
+  }
+
+  /* Card adjustments */
+  .card-container { 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 15px; 
+  }
+  .card { 
+    width: 400px; 
+    height: 450px; 
+    top: 50px; 
+    left: 0; 
+  }
+  #card3 { 
+    width: 90%; 
+    margin-left: 0; 
+  }
+
+  /* Disable 3D animation for smaller screens */
+  canvas, #three-canvas, #bg { display: none !important; }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  /* Header adjustments */
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 14px;
+  }
+
+  nav a { 
+    font-size: 14px; 
+    margin: 4px 8px; 
+  }
+
+  /* Card adjustments */
+  .card-container, .contain2 { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 20px; 
+  }
+  span:hover {
+    background: #1a1a2e;
+    color: #fff;
+
+  }
+ 
+  .card { 
+    width: 90%; 
+    height: auto; 
+    top: 0; 
+    left: 0; 
+  }
+  .card-img { height: 180px; }
+  .card-text { font-size: 13px; }
+  .tech-tags span { font-size: 11px; padding: 4px 8px; }
+ 
+  .buttons a { font-size: 11px; padding: 6px 12px; }
+
+  /* Disable 3D animation for smaller screens */
+  canvas, #three-canvas, #bg { display: none !important; }
+}
+
+/* Mobiles */
+@media (max-width: 480px) {
+  /* Header adjustments */
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 12px;
+  }
+
+  nav a { 
+    font-size: 13px; 
+    margin: 3px; 
+  }
+
+  /* Card adjustments */
+  .card { 
+    width: 95%; 
+    height: auto; 
+    top: 0; 
+    left: 0; 
+  }
+  .card-img { height: 150px; }
+  .card-text { font-size: 12px; }
+  .tech-tags { flex-wrap: wrap; gap: 5px; }
+  .buttons { flex-wrap: wrap; gap: 5px; }
+  .buttons a { font-size: 10px; padding: 5px 10px; }
+
+  /* Disable 3D animation for smaller screens */
+  canvas, #three-canvas, #bg { display: none !important; }
+}
+
+</style>
+
+   
+
+</head>
+<body>
+ 
+   
+    <div class="card-container">
+      <div class="card card1">
+        <div class="card-img"></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>CursorAi</span>
+            <span>MangoDb</span>
+          </div>
+          <div class="card-text">
+            <strong>Game Development by cursor ai</strong><br>
+Developed an intelligent Bingo game using Python with Cursor AI integration. Implemented automated number generation, real-time win validation, and an interactive console interface. Leveraged Cursor AI for optimized code structuring and debugging, enhancing gameplay logic and performance. The project focuses on providing a fun, efficient, and AI-assisted gaming experience.          </div>
+          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_emotionalbreakthrough-aihashtag-codinghashtag-activity-7371356087800885248-_Nbb?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
+            <a href="https://github.com/Madhumgit/cursor">Source Code</a>
+          </div>
+        </div>
+      </div>
+      <div class="card card2">
+        <div class="card-img" ></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>Html</span>
+            <span>CSS</span>
+            <span>Python</span>
+            <span>Django</span>
+          </div>
+          <div class="card-text">
+            <strong>AI Image Generator</strong><br>
+Built an AI-powered web app that converts text prompts into images using FastAPI and Python. Features include real-time image generation, dynamic static file serving, and API routes optimized for frontend integration. Tech stack: Python, FastAPI, Uvicorn, PIL, Replicate API. Excited to deploy soon and connect with others working on AI/web projects!          </div>
+          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_ai-machinelearning-python-activity-7343300594679324672-k9xD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
+            <a href="https://github.com/Madhumgit/image-gen-webapp">Source Code</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contain2">
+     <div class="card-container">
+      <div class="card card3">
+        <div class="card-img" ></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>FaceAPI</span>
+            <span>WikipedieAPI</span>
+          </div>
+          <div class="card-text">
+            <strong>AI Voice Assistant like Alexa</strong><br>
+ Using FastAPI, SpeechRecognition, and PyAudio.Developed a Python-based Voice Assistant capable of recognizing and responding to commands like searching Wikipedia, opening websites and playing music. Integrated SpeechRecognition, WolframAlpha API, and other tools for a smooth conversational experience. Enhanced skills in AI, NLP, and real-time system integration.          </div>
+          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_excited-what-new-activity-7338551048988479490-K_YD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
+            <a href="https://github.com/Madhumgit/voice-maker">Source Code</a>
+          </div>
+        </div>
+      </div>
+      <div class="card card4">
+        <div class="card-img"></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>React</span>
+            <span>CSS</span>
+            <span>RestAPI</span>
+            <span>Flask</span>
+            <span>PostgreSQL</span>
+          </div>
+          <div class="card-text">
+            <strong>Automatic Time Table Scheduler</strong><br>
+Our team selected as top 50 out of 200+ teams at the Smart India Hackathon selection round. We built an Automatic College Timetable Scheduler using AI and dynamic scheduling to simplify and optimize timetable generation. Amazing experience presenting our solution, gaining feedback, and learning the value of teamwork.          </div>
+          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_sih-smartindiahackathon-teamwork-activity-7374110321571004416-Y4Cl?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
+            <a href="https://github.com/Madhumgit/AutoTimeScheduler">Source Code</a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="contain3">
+ <div class="card-container">
+  
+      <div class="card card5" id="card3">
+        <div class="card-img"></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>OpenAPI</span>
+            <span>Python</span>
+          </div>
+          <div class="card-text">
+            <strong>Music Recommendation</strong><br>
+The Music Recommendation System is an AI-driven project designed to suggest songs based on user preferences and voice interactions. It utilizes Natural Language Processing (NLP) to understand user input and recommend music that matches their mood or query. The system combines machine learning algorithms with audio feature analysis to deliver accurate and personalized song suggestions.
+
+Built using Python, the system integrates voice recognition, NLP models, and recommendation algorithms such as collaborative filtering and content-based filtering. It enhances user experience by enabling seamless, voice-based interaction and personalized recommendations, making music discovery more intuitive and engaging.          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_playsound-warnings-activity-7253253895483793408-NS72?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
+            <a href="https://github.com/Madhumgit/voice-maker">Source Code</a>
+          </div>
+        </div>
+      </div>
+ </div>
+    
+ 
+  
+
+
+
+
+<script>
+  // Get the placeholder div
+  const headerContainer = document.getElementById('header');
+
+  // Fetch header.html
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+      headerContainer.innerHTML = data;
+
+      // Optional: add hover effect for cursor on links
+      const links = headerContainer.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+      });
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+ <div id="cursor" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script>
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let posX = mouseX, posY = mouseY;
+    const speed = 0.18;
+
+    // Load header first
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header").innerHTML = data;
+
+        // Add cursor hover to links/buttons after header loads
+        const interactive = document.querySelectorAll('a, button, .clickable');
+        interactive.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
+        });
+      });
+
+    // Smooth-follow cursor
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.classList.remove('cursor--hide');
+    });
+
+    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
+    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+
+    function raf() {
+      posX += (mouseX - posX) * speed;
+      posY += (mouseY - posY) * speed;
+      cursor.style.left = posX + 'px';
+      cursor.style.top = posY + 'px';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+   
+    window.addEventListener('mouseup', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+  </script>
+
+
+
+
+  <style>
+   
+    canvas {
+      display: block;
+    }
+    #blob {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;  /* push behind content */
+  pointer-events: none; /* allow clicks through */
+}
+
+  </style>
+   <canvas id="blob"></canvas>
+
+  <script>
+    const canvas = document.getElementById("blob");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    let angle = 0;
+
+    function drawBlob() {
+      ctx.clearRect(0, 0, w, h);
+
+      const x = w / 2 + Math.cos(angle) * 150;
+      const y = h / 2 + Math.sin(angle) * 150;
+
+      const radius = 80 + Math.sin(angle * 2) * 20;
+
+      // Neon glow
+      const gradient = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
+      gradient.addColorStop(0, "rgba(0,255,200,1)");
+      gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+      ctx.beginPath();
+      ctx.fillStyle = gradient;
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      angle += 0.02;
+      requestAnimationFrame(drawBlob);
+    }
+
+    drawBlob();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Interactive Website Builder</title>
+    <style>
+      
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            clip-path: ellipse(80% 80% at 50% 50%);
+            margin: 0 auto;
+        }
+
+        .floating-websites {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 15px;
+            padding: 40px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .website-preview {
+            width: 100px;
+            height: 75px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 8px;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .website-preview:nth-child(1) {
+            transform: rotateX(15deg) rotateY(-20deg) translateZ(50px);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .website-preview:nth-child(2) {
+            transform: rotateX(-10deg) rotateY(25deg) translateZ(80px);
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .website-preview:nth-child(3) {
+            transform: rotateX(20deg) rotateY(-30deg) translateZ(30px);
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .website-preview:nth-child(4) {
+            transform: rotateX(-15deg) rotateY(35deg) translateZ(60px);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .website-preview:nth-child(5) {
+            transform: rotateX(10deg) rotateY(-10deg) translateZ(40px);
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .website-preview:nth-child(6) {
+            transform: rotateX(-20deg) rotateY(20deg) translateZ(70px);
+            background: linear-gradient(135deg, #fa709a, #fee140);
+        }
+
+        .website-preview:nth-child(7) {
+            transform: rotateX(25deg) rotateY(-25deg) translateZ(20px);
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+
+        .website-preview:nth-child(8) {
+            transform: rotateX(5deg) rotateY(15deg) translateZ(45px);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .website-preview:nth-child(9) {
+            transform: rotateX(-25deg) rotateY(-15deg) translateZ(55px);
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .website-preview:nth-child(10) {
+            transform: rotateX(30deg) rotateY(30deg) translateZ(25px);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .website-preview:nth-child(11) {
+            transform: rotateX(-10deg) rotateY(-40deg) translateZ(65px);
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .website-preview:nth-child(12) {
+            transform: rotateX(20deg) rotateY(10deg) translateZ(35px);
+            background: linear-gradient(135deg, #fa709a, #fee140);
+        }
+
+        .website-preview:nth-child(13) {
+            transform: rotateX(12deg) rotateY(-35deg) translateZ(55px);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .website-preview:nth-child(14) {
+            transform: rotateX(-18deg) rotateY(28deg) translateZ(40px);
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .website-preview:nth-child(15) {
+            transform: rotateX(22deg) rotateY(-12deg) translateZ(65px);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .website-preview:nth-child(16) {
+            transform: rotateX(-8deg) rotateY(42deg) translateZ(30px);
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .website-preview:nth-child(17) {
+            transform: rotateX(18deg) rotateY(-28deg) translateZ(50px);
+            background: linear-gradient(135deg, #fa709a, #fee140);
+        }
+
+        .website-preview:nth-child(18) {
+            transform: rotateX(-22deg) rotateY(15deg) translateZ(45px);
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+
+        .website-preview:nth-child(19) {
+            transform: rotateX(8deg) rotateY(-45deg) translateZ(60px);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .website-preview:nth-child(20) {
+            transform: rotateX(-15deg) rotateY(35deg) translateZ(35px);
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .website-preview:nth-child(21) {
+            transform: rotateX(28deg) rotateY(-18deg) translateZ(55px);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .website-preview:nth-child(22) {
+            transform: rotateX(-12deg) rotateY(25deg) translateZ(40px);
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .website-preview:nth-child(23) {
+            transform: rotateX(15deg) rotateY(-32deg) translateZ(50px);
+            background: linear-gradient(135deg, #fa709a, #fee140);
+        }
+
+        .website-preview:nth-child(24) {
+            transform: rotateX(-25deg) rotateY(20deg) translateZ(45px);
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+
+        .center-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .center-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .center-button.clicked {
+            top: 85%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            font-size: 18px;
+        }
+
+        .page-hidden {
+            opacity: 0;
+            transform: scale(0.8) translateY(100px);
+            pointer-events: none;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .floating-websites.hidden {
+            opacity: 0;
+            transform: scale(0.5) rotateX(90deg);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .title.hidden {
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+        .title {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            z-index: 50;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .website-preview {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .website-preview:nth-child(2) { animation-delay: -1s; }
+        .website-preview:nth-child(3) { animation-delay: -2s; }
+        .website-preview:nth-child(4) { animation-delay: -3s; }
+        .website-preview:nth-child(5) { animation-delay: -4s; }
+        .website-preview:nth-child(6) { animation-delay: -5s; }
+        .website-preview:nth-child(7) { animation-delay: -6s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Made with Squarespace</div>
+        <div class="floating-websites">
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Robot" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Circuit" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Neural" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Tech" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Data" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Brain" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Network" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI System" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Core" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Matrix" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Digital" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Future" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Smart" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Logic" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Code" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Machine" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Process" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Vision" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Learn" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Think" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Solve" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=100&fit=crop&crop=center" alt="AI Create" class="card-image">
+            </div>
+            <div class="website-preview">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop&crop=center" alt="AI Build" class="card-image">
+            </div>
+        </div>
+        <button class="center-button" id="centerBtn">Start<br>Building</button>
+    </div>
+<div class="content">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique dignissimos odit nostrum, nihil doloremque quibusdam, libero qui quaerat vero doloribus maxime. Quisquam dolor dolorum natus fugiat quas qui? Laborum rerum quo a libero esse odit, qui, velit molestiae nisi sapiente, adipisci beatae at ex praesentium laboriosam nulla iste unde culpa?
+</div>
+<style>
+  <style>
+.content {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #141E30, #243B55);
+    color: #fff;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    top: 0;
+    transition: opacity 1s ease, transform 1s ease;
+    opacity: 0;
+    transform: translateY(50px);
+}
+.content.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.container.moved-up {
+    transform: translateY(-100vh);
+    transition: transform 1s ease-in-out;
+}
+</style>
+
+<script>
+centerButton.addEventListener('click', () => {
+    isClicked = true;
+    centerButton.classList.add('clicked');
+
+    // Reset rotation
+    floatingWebsites.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+    // Animate container up
+    container.classList.add('moved-up');
+
+    // Reveal content below after transition
+    setTimeout(() => {
+        document.querySelector('.content').classList.add('active');
+    }, 800);
+});
+</script>
+
+
+    <script>
+        const container = document.querySelector('.container');
+        const floatingWebsites = document.querySelector('.floating-websites');
+        const centerButton = document.getElementById('centerBtn');
+        let isClicked = false;
+
+        // 3D rotation based on mouse movement
+        document.addEventListener('mousemove', (e) => {
+            if (isClicked) return;
+            
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const rotateX = (y - 0.5) * 30;
+            const rotateY = (x - 0.5) * -30;
+            
+            floatingWebsites.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        // Button click animation
+        centerButton.addEventListener('click', () => {
+            isClicked = true;
+            centerButton.classList.add('clicked');
+            
+            // Reset rotation when clicked
+            floatingWebsites.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            
+            // Add some particle effect
+            createParticles();
+            
+            // Hide the page after a delay
+            setTimeout(() => {
+                document.querySelector('.title').classList.add('hidden');
+                floatingWebsites.classList.add('hidden');
+                
+                // Hide the entire container after animations complete
+                setTimeout(() => {
+                    container.classList.add('page-hidden');
+                }, 1000);
+            }, 500);
+        });
+
+        // Reset button position on double click
+        centerButton.addEventListener('dblclick', () => {
+            isClicked = false;
+            centerButton.classList.remove('clicked');
+        });
+
+        // Show page on page load/reload
+        window.addEventListener('load', () => {
+            // Remove any hidden classes to show the page
+            container.classList.remove('page-hidden');
+            document.querySelector('.title').classList.remove('hidden');
+            floatingWebsites.classList.remove('hidden');
+            centerButton.classList.remove('clicked');
+            isClicked = false;
+        });
+
+        // Particle effect function
+        function createParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = 'white';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.zIndex = '200';
+                
+                document.body.appendChild(particle);
+                
+                const angle = (Math.PI * 2 * i) / 20;
+                const velocity = 100 + Math.random() * 100;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let x = 0, y = 0;
+                const animate = () => {
+                    x += vx * 0.02;
+                    y += vy * 0.02;
+                    particle.style.transform = `translate(${x}px, ${y}px)`;
+                    particle.style.opacity = 1 - (Math.abs(x) + Math.abs(y)) / 200;
+                    
+                    if (Math.abs(x) < 200 && Math.abs(y) < 200) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        particle.remove();
+                    }
+                };
+                animate();
+            }
+        }
+
+        // Add hover effects to website previews
+        document.querySelectorAll('.website-preview').forEach(preview => {
+            preview.addEventListener('mouseenter', () => {
+                preview.style.transform += ' scale(1.1)';
+            });
+            
+            preview.addEventListener('mouseleave', () => {
+                preview.style.transform = preview.style.transform.replace(' scale(1.1)', '');
+            });
+        });
+    </script>
+</body>
+</html>

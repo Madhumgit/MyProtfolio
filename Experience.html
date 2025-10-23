@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Timeline</title>
+  <div id="header"></div>
+  <script>
+  // Get the placeholder div
+  const headerContainer = document.getElementById('header');
+
+  // Fetch header.html
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+      headerContainer.innerHTML = data;
+
+      // Optional: add hover effect for cursor on links
+      const links = headerContainer.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+      });
+    })
+    .catch(err => console.error('Failed to load header:', err));
+</script>
+ <div id="cursor" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script>
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let posX = mouseX, posY = mouseY;
+    const speed = 0.18;
+
+    // Load header first
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header").innerHTML = data;
+
+        // Add cursor hover to links/buttons after header loads
+        const interactive = document.querySelectorAll('a, button, .clickable');
+        interactive.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
+          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
+        });
+      });
+
+    // Smooth-follow cursor
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.classList.remove('cursor--hide');
+    });
+
+    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
+    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+
+    function raf() {
+      posX += (mouseX - posX) * speed;
+      posY += (mouseY - posY) * speed;
+      cursor.style.left = posX + 'px';
+      cursor.style.top = posY + 'px';
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+   
+    window.addEventListener('mouseup', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+  </script>
+
+ <style>
+* { box-sizing: border-box; margin: 0; padding: 0 }
+html, body, #app { height: 100% }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  cursor: none; /* hide default cursor */
+}
+
+/* Background star effect */
+.stars {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: transparent;
+  overflow: hidden;
+}
+.stars span {
+  position: absolute;
+  display: block;
+  width: 2px;
+  height: 2px;
+  background: white;
+  animation: twinkle 5s infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Timeline container */
+.timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 100px auto;
+  padding: 20px;
+}
+.timeline p {
+  text-align: left;
+}
+.timeline h4,h3 {
+  text-align: left;
+  background: linear-gradient(45deg, #ff0057, #ff7b00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Vertical line */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  background: #ff0057;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -2px;
+}
+
+/* Cards */
+.timeline-item {
+  padding: 20px;
+  position: relative;
+  width: 50%;
+}
+
+.timeline-item .card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s ease forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.timeline-item .card:hover {
+  transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 0, 87, 0.6);
+  background-color: black;
+  color: white;
+}
+
+/* Left side */
+.timeline-item.left {
+  left: -50px;
+  text-align: right;
+}
+.timeline-item.left::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: -10px;
+  border: 10px solid transparent;
+  border-left: 10px solid #ff0057;
+}
+
+/* Right side */
+.timeline-item.right {
+  left: 55%;
+  text-align: left;
+}
+.timeline-item.right::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: -10px;
+  border: 10px solid transparent;
+  border-right: 10px solid #ff0057;
+}
+
+/* Images inside card */
+.card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Glowing button */
+.btn-3d {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #ff0057, #ff7b00);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(255, 0, 87, 0.5);
+}
+.btn-3d:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 10px 25px rgba(255, 0, 87, 0.8);
+}
+
+/* ===== Media Queries ===== */
+@media screen and (max-width: 1024px)
+
+{
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    padding: 16px;
+    width: 100%;
+  }
+  .timeline {
+    max-width: 100%;
+  }
+  .timeline-item.left, .timeline-item.right {
+    width: 100%;
+    left: 0;
+  }
+  .timeline::after {
+    left: 20px;
+  }
+  .timeline-item.left::before, .timeline-item.right::before {
+    left: 15px;
+    border: 10px solid transparent;
+    border-right: 10px solid #ff0057;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .timeline {
+    margin: 50px auto;
+    padding: 10px;
+  }
+  .timeline-item .card {
+    padding: 15px;
+  }
+  .card img {
+    height: auto;
+  }
+  .btn-3d {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .timeline {
+    margin: 30px auto;
+    padding: 5px;
+  }
+  .timeline-item .card {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .card img {
+    height: auto;
+  }
+  .btn-3d {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+</style>
+
+</head>
+<body>
+
+  <!-- Background stars -->
+  <div class="stars">
+    <span style="top:10%;left:20%;animation-delay:0s;"></span>
+    <span style="top:30%;left:50%;animation-delay:2s;"></span>
+    <span style="top:70%;left:80%;animation-delay:4s;"></span>
+    <span style="top:60%;left:10%;animation-delay:6s;"></span>
+    <span style="top:40%;left:90%;animation-delay:3s;"></span>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <div class="timeline-item left">
+      <div class="card">
+        <img src="../logoo/kalv.png" alt="Experiment 1">
+        <h3>Internship – KALV Consultants and Facilitators Ltd</h3>
+<h4>Position: Software & IT Intern (Remote, Ongoing)</h4>
+        <p>
+
+I am currently working as a remote intern at KALV Consultants, contributing as both a Full-Stack Developer and a Machine Learning Engineer. I collaborated with colleagues to design, develop, and successfully deploy a full-featured web application. Currently, I am focused on developing AI and machine learning solutions, applying real-world data to build and deploy models. This experience allows me to strengthen my technical skills, work on impactful projects, and gain valuable professional mentorship in both software development and machine learning..</p>
+       <a href="https://github.com/kalvUK/web_01"><button class="btn-3d">View More</button></a>
+      </div>
+    </div>
+    <div class="timeline-item right">
+      <div class="card">
+        <img src="../logoo/techno.png" alt="Experiment 2">
+        <h3>Machine Learning Internship at TechnoHacks Solutions Pvt. Ltd.</h3>
+        <p>I successfully completed a Machine Learning internship at TechnoHacks Solutions Pvt. Ltd. from June 8, 2025, to July 7, 2025. During this internship, I gained hands-on experience in implementing machine learning algorithms, analyzing datasets, and solving real-world problems. I worked on projects involving data preprocessing, model building, and performance evaluation, which enhanced my understanding of various ML techniques. My contributions were recognized for consistency, dedication, and a strong work ethic, helping me strengthen both my technical skills and professional approach. This experience also improved my problem-solving abilities, teamwork, and communication skills, preparing me to take on more complex challenges in the field of artificial intelligence and data science.</p>
+        <button class="btn-3d">View More</button>
+      </div>
+    </div>
+    <div class="timeline-item left">
+      <div class="card">
+        <img src="../logoo/codesoft.png" alt="Experiment 3">
+        <h3>Machine Learning Virtual Internship at CodSoft</h3>
+        <p>I successfully completed a 4-week virtual internship in Machine Learning at CodSoft from March 5, 2024, to April 5, 2024. During this program, I gained hands-on experience in implementing machine learning algorithms, working on real-world projects, and applying data-driven solutions. My skills and contributions were recognized for excellence, showcasing my dedication, problem-solving abilities, and technical expertise. This internship strengthened both my practical ML knowledge and professional approach, preparing me for advanced challenges in artificial intelligence and data science.</p>
+        <button class="btn-3d">View More</button>
+      </div>
+    </div>
+   
+  </div>
+<style>
+  .card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s ease forwards;
+  /* optional initial delay */
+  /* animation-delay: 0.2s; */
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</body>
+</html>

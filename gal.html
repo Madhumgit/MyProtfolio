@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy Portfolio</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #0D0D0D;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    width: 100%;
+    color: white;
+  }
+  #bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 150px;
+  }
+  h1 {
+    font-size: 3em;
+    color: #FF4D6D;
+    text-shadow: 0 0 10px #FF4D6D, 0 0 20px #FF4D6D, 0 0 30px #FF4D6D;
+  }
+  p {
+    font-size: 1.5em;
+    color: #6A00F4;
+    text-shadow: 0 0 10px #6A00F4, 0 0 20px #6A00F4;
+  }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<div class="content">
+  <h1>Welcome to My Galaxy Portfolio</h1>
+  <p>Experience a dynamic, swirling galaxy effect</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.getElementById('bg').appendChild(renderer.domElement);
+
+  const particleCount = 6000;
+  const geometry = new THREE.BufferGeometry();
+  const positions = [];
+  const colors = [];
+  const spiralArms = 4; // number of galaxy arms
+
+  for(let i=0; i<particleCount; i++){
+    const arm = i % spiralArms;
+    const radius = Math.random() * 200;
+    const angle = (radius * 0.3) + (arm * (2 * Math.PI / spiralArms)) + Math.random()*0.5;
+    const height = (Math.random() - 0.5) * 50;
+
+    positions.push(
+      radius * Math.cos(angle),
+      height,
+      radius * Math.sin(angle)
+    );
+
+    // Color gradient for glowing effect
+    const color = new THREE.Color();
+    const hue = 0.6 + Math.random() * 0.1; // blue/purple/pink range
+    color.setHSL(hue, 1.0, 0.6);
+    colors.push(color.r, color.g, color.b);
+  }
+
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+  const material = new THREE.PointsMaterial({
+    size: 0.6,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.9
+  });
+
+  const particles = new THREE.Points(geometry, material);
+  scene.add(particles);
+
+  camera.position.z = 400;
+
+  // Animate spiral rotation
+  function animate() {
+    requestAnimationFrame(animate);
+    const positions = particles.geometry.attributes.position.array;
+    for (let i=0; i<positions.length; i+=3){
+      const x = positions[i];
+      const z = positions[i+2];
+      const angle = 0.001;
+      positions[i] = x * Math.cos(angle) - z * Math.sin(angle);
+      positions[i+2] = x * Math.sin(angle) + z * Math.cos(angle);
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+
+    particles.rotation.y += 0.0003;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+</body>
+</html>
