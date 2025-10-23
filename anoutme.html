@@ -33,7 +33,7 @@
         
   <!-- Left text block -->
   <div class="text">
-    <div class="line"><span>A dedicated AI & Machine Learning Engineer and Full stack Developer 
+    <div class="line" ><span>A dedicated AI & Machine Learning Engineer and Full stack Developer 
      with strong experience in building intelligent systems </span></div>
     
 
@@ -71,7 +71,7 @@
     <div class="container">
         <div class="left-section">
             <h1 class="colorful-title">About Me</h1>
-            <p class="about-content">
+            <p style="font-size: 23px; font-weight:bolder; overflow: hidden;width:600px" class="about-content">
 
   I’m a passionate AI & Machine Learning Engineer and Fullstack Developer with hands-on experience in building intelligent systems and modern web applications.I like to develop a ML models for innovative solutions or developing smooth, interactive websites with modern design and animations.
            </p>
@@ -193,55 +193,32 @@
   </script>
 
 
-<div class="containers">
-    <h1 class="colorful-title">Contact Me</h1>
-    <div class="contact-form">
-        <form id="contactForm">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="_replyto" placeholder="Your Email" required>
-            <input class="cont" type="hidden" name="_subject" value="New Contact Form Submission">
-            <textarea class="mess" name="message" placeholder="Your Message" required></textarea>
-            <button class="submit" type="submit">Send Message</button>
-        </form>
-    </div>
+<h1 class="colorful-title">Contact Me</h1>
+
+<div class="contact-form">
+  <form
+  action="https://formspree.io/f/mvgwjnjo"
+  method="POST"
+>
+    <label>
+      Your Name:
+      <input type="text" name="name" placeholder="Enter your name" required>
+    </label>
+
+    <label>
+      Your Email:
+      <input type="email" name="email" placeholder="Enter your email" required>
+    </label>
+
+    <label>
+      Your Message:
+      <textarea name="message" placeholder="Type your message..." required></textarea>
+    </label>
+
+    <button type="submit">Send</button>
+  </form>
 </div>
 
-<script>
-  // Get the form element
-  const form = document.getElementById('contactForm');
-
-  // Add submit event listener
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent default form submission
-
-    // Gather form data
-    const formData = {
-      name: form.name.value,
-      _replyto: form._replyto.value,
-      message: form.message.value
-    };
-
-    try {
-      // Send data to Node.js backend
-      const res = await fetch('http://localhost:5000/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await res.json();
-      alert(data.message); // Show success/failure message
-
-      if(data.success){
-        form.reset(); // Clear the form on success
-      }
-
-    } catch (err) {
-      alert('Something went wrong. Please try again.');
-      console.error(err);
-    }
-  });
-</script>
 
 
         <div class="social-links">
