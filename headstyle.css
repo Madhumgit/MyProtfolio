@@ -44,7 +44,8 @@ header {
 header {
   height: 80px;
   position: fixed; top: 0; left: 0; right: 0;
-  background: linear-gradient(90deg,rgb(193, 190, 190),rgb(196, 192, 192),silver);
+  background: linear-gradient(90deg,rgb(193, 190, 190),white,silver);
+  color: #000000;
   display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
   z-index: 1000; box-shadow: 0 6px 18px rgba(55, 169, 179, 0.55);
   border-bottom: 1px solid rgba(147, 14, 14, 0.03);

@@ -3,30 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smooth 3D Page Scroll (Down to Up)</title>
+  <title>Smooth 3D Page Scroll</title>
+  
   <style>
-      /* background effect*/
-   
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #ffffff;
+    }
+
+    /* Background Effect */
     .nebula-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-
-    z-index: -1;
+      background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+      z-index: -1;
       overflow: hidden;
     }
+
     .sparkle {
       position: absolute;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 90%, transparent 10%);
       animation: nebula-sparkle 3s infinite ease-in-out;
-      transform-origin: center;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Subtle glow */
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
+
     .sparkle::before {
       content: '';
       position: absolute;
@@ -34,12 +48,13 @@ background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
       left: 50%;
       width: 50%;
       height: 50%;
-      background: linear-gradient(45deg, #ff6f91, #d4a5ff); /* Colorful nebula glow */
+      background: linear-gradient(45deg, #ff6f91, #d4a5ff);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       opacity: 0.6;
       animation: nebula-pulse 4s infinite ease-in-out;
     }
+
     @keyframes nebula-sparkle {
       0%, 100% {
         opacity: 0.3;
@@ -47,9 +62,10 @@ background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
       }
       50% {
         opacity: 1;
-        transform: scale(1.2) rotateY(360deg) translateZ(30px); /* 3D rotation with depth */
+        transform: scale(1.2) rotateY(360deg) translateZ(30px);
       }
     }
+
     @keyframes nebula-pulse {
       0%, 100% {
         opacity: 0.4;
@@ -60,7 +76,8 @@ background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
         transform: translate(-50%, -50%) scale(1.5);
       }
     }
-    /* Position and size sparkles */
+
+    /* Sparkle positioning */
     .sparkle:nth-child(1) { top: 15%; left: 25%; width: 6px; height: 6px; animation-delay: 0s; }
     .sparkle:nth-child(2) { top: 25%; left: 75%; width: 8px; height: 8px; animation-delay: 0.7s; }
     .sparkle:nth-child(3) { top: 35%; left: 45%; width: 5px; height: 5px; animation-delay: 1.2s; }
@@ -69,32 +86,318 @@ background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
     .sparkle:nth-child(6) { top: 65%; left: 65%; width: 6px; height: 6px; animation-delay: 0.9s; }
     .sparkle:nth-child(7) { top: 75%; left: 35%; width: 5px; height: 5px; animation-delay: 2s; }
     .sparkle:nth-child(8) { top: 85%; left: 55%; width: 7px; height: 7px; animation-delay: 0.4s; }
-    .sparkle:nth-child(9) { top: 20%; left: 40%; width: 3px; height: 3px; animation-delay: 1.8s; }
-    .sparkle:nth-child(10) { top: 30%; left: 90%; width: 6px; height: 6px; animation-delay: 0.6s; }
-    .sparkle:nth-child(11) { top: 40%; left: 20%; width: 4px; height: 4px; animation-delay: 1.1s; }
-    .sparkle:nth-child(12) { top: 50%; left: 70%; width: 5px; height: 5px; animation-delay: 0.2s; }
-    .sparkle:nth-child(13) { top: 60%; left: 30%; width: 6px; height: 6px; animation-delay: 1.4s; }
-    .sparkle:nth-child(14) { top: 70%; left: 80%; width: 3px; height: 3px; animation-delay: 0.8s; }
-    .sparkle:nth-child(15) { top: 80%; left: 50%; width: 7px; height: 7px; animation-delay: 1.6s; }
-    .content {
+
+    /* Container + Cube */
+    .container {
+      width: 100%;
+      height: 100vh;
+      perspective: 1500px;
       position: relative;
-      z-index: 1;
-      min-height: 100vh;
+    }
+
+    .pages {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s ease-in-out;
+      position: absolute;
+      transform: translateZ(-500px) rotateX(0deg);
+    }
+
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      font-weight: bold;
+      color: white;
+      backface-visibility: hidden;
+    }
+
+    .p1 { transform: rotateX(0deg) translateZ(0); }
+    .p2 { transform: rotateX(-90deg) translateZ(0); }
+    .p3 { transform: rotateX(-180deg) translateZ(0); }
+    .p4 { transform: rotateX(-270deg) translateZ(0); }
+
+    /* Card Styles */
+    .card-container {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 420px;
+      height: 500px;
+      background-color: #000;
+      color: rgb(19, 142, 140);
+      border-radius: 10px;
+      box-shadow: 8px 8px 8px 8px rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+
+    .card:hover {
+      background: white;
+      color: rgb(25, 25, 25);
+      transform: translateY(0);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 320px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-text {
+      padding: 10px;
+      font-size: 18px;
+      font-weight: lighter;
+      text-align: center;
+      line-height: 1.4;
+      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      text-align: center;
+    }
+
+    /* Magic Grid (p3) */
+    .magic-card-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      width: 90%;
+      margin-left: -230px;
+      max-width: 1200px;
+      margin-top: 60px;
+    }
+
+    .magic-card {
+      width: 220px;
+      height: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgb(23, 124, 144);
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.7s ease;
+    }
+
+    .magic-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .magic-card.show-card {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .magic-card:hover {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      background-color: whitesmoke;
+    }
+
+    /* Flow Cards (p4) */
+    .card-track {
+      display: flex;
+      gap: 70px;
+      width: 220%;
+      margin-top: 440px;
+      background-color: rgb(14, 110, 134);
+      animation: horizontal-flow 10s linear infinite;
+      padding: 20px 0;
+    }
+
+    .card-track:hover {
+      animation-play-state: paused;
+      background-color: #022a2a;
+    }
+
+    .flow-card {
+      width: 190px;
+      height: 150px;
+      background: silver;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.7s ease;
+      flex-shrink: 0;
+    }
+
+    .flow-card img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+
+    .flow-card.show-flow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @keyframes horizontal-flow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* RESPONSIVE - MOBILE ONLY */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+
+      .container {
+        perspective: 800px;
+      }
+
+      .pages {
+        transform: translateZ(-300px) rotateX(0deg);
+      }
+
+      .page {
+        font-size: 1.2em;
+        padding: 20px 10px;
+      }
+
+      .card-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+        align-items: center;
+      }
+
+      .card {
+        width: 90%;
+        max-width: 400px;
+        height: auto;
+        min-height: 420px;
+      }
+
+      .card-img {
+        height: 220px;
+      }
+
+      .card-text {
+        font-size: 15px;
+        padding: 15px;
+      }
+
+      .magic-card-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        width: 95%;
+      }
+
+      .magic-card {
+        width: 100%;
+        height: 90px;
+      }
+
+      .magic-card img {
+        padding: 10px;
+      }
+
+      .card-track {
+        gap: 40px;
+        margin-top: 50px;
+      }
+
+      .flow-card {
+        width: 140px;
+        height: 110px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        perspective: 600px;
+      }
+
+      .pages {
+        transform: translateZ(-250px) rotateX(0deg);
+      }
+
+      .page {
+        font-size: 1em;
+        padding: 15px 5px;
+      }
+
+      .card {
+        width: 95%;
+        min-height: 380px;
+      }
+
+      .card-img {
+        height: 180px;
+      }
+
+      .card-text {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      .magic-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 98%;
+      }
+
+      .magic-card {
+        height: 70px;
+      }
+
+      .card-track {
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .flow-card {
+        width: 120px;
+        height: 100px;
+      }
+    }
+    #lastpart {
+      margin-top: -30px;
+      margin-left: 1700px;
+    }
+    #lastpart{
+      grid-template-columns: repeat(6,1fr);
     }
   </style>
-
-  <!-- Nebula Sparkle Background -->
- 
-  <!-- Sample Content (integrate your skills section here) -->
-
 </head>
 <body>
-    <div id="header"></div>
+  <!-- Background -->
+  <div class="nebula-bg">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+ <div id="header"></div>
     <div id="cursor" aria-hidden="true"></div>
 
   <!-- Scripts -->
@@ -146,265 +449,7 @@ background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
     });
 
   </script>
-  <!--backgrounf effect-->
-   <div class="nebula-bg">
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    
-  </div>
-
-  
-
-     
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      
-      margin-top: 70px;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-      body {
-color: #ffffff;
-
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-
-    /* Container + Cube */
-    .container {
-      width: 100%;
-      height: 100%;
-      perspective: 1500px;
-      position: relative;
-    }
-    .pages {
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1s ease-in-out;
-      position: absolute;
-      transform: translateZ(-500px) rotateX(0deg);
-    }
-    .page {
-      position: absolute;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2em;
-      font-weight: bold;
-      color: white;
-      backface-visibility: hidden;
-    }
-    .p1 { transform: rotateX(0deg) translateZ(0); }
-    .p2 { transform: rotateX(-90deg) translateZ(0); }
-    .p3 { transform: rotateX(-180deg) translateZ(0); }
-    .p4 { transform: rotateX(-270deg) translateZ(0); }
-
-    /* Background Nebula */
-    .nebula-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: white;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .sparkle {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient( rgba(255, 255, 255, 0.9) 100%);
-      animation: nebula-sparkle 3s infinite ease-in-out;
-      box-shadow: 0 0 10px rgba(255,255,255,0.5);
-    }
-    .sparkle::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 50%; height: 50%;
-      background: linear-gradient(45deg, #ffffff, #d4a5ff);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.6;
-      animation: nebula-pulse 4s infinite ease-in-out;
-    }
-    @keyframes nebula-sparkle {
-      0%,100% { opacity: 0.3; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.2) rotateY(360deg); }
-    }
-    @keyframes nebula-pulse {
-      0%,100% { opacity: 0.4; transform: translate(-50%,-50%) scale(0.8);}
-      50% { opacity: 0.8; transform: translate(-50%,-50%) scale(1.5);}
-    }
-
-    /* Card style for p1/p2 */
-    .card-container {
-      display: flex;
-      gap: 40px;
-      margin-top: -50px;
-    }
-    .card {
-      width: 420px;
-      height: 500px;
-      background-color: rgb(0, 0, 0);
-      color: rgb(19, 142, 140);
-      
-      border-radius: 10px;
-      box-shadow: 8px 8px 8px 8px rgba(255, 255, 255, 0.3);
-      overflow: hidden;
-      display: flex;
-     
-  transform: translateY(30px);
-  transition: all 0.8s ease-out;
-      flex-direction: column;
-      align-items: center;
-    }
-    .card:hover{
-      background:white;
-      color: rgb(25, 25, 25);
-     
-  transform: translateY(0);
-    }
-    .card-img {
-      width: 430px; height: 320px;
-      margin-top: -50px;
-      border-color: whitesmoke;
-      background-size: cover;
-      border-bottom: white;
-      background-position: center;
-    }
-    .card-text {
-      padding: 10px;
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      font-weight: lighter;
-      justify-content: center;
-      width: 430px;
-      font-size: 25px;
-    }
-
-    /* Magic grid (p3) */
-    .magic-card-grid {
-      display: grid;
-      grid-template-columns: repeat(5,1fr);
-      gap: 20px;
-      width: 90%;
-    }
-    .magic-card {
-      height: 120px;
-      background: black;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: all 0.7s ease;
-    }
-    .magic-card {
-  width: 220px;
-  height: 120px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(23, 124, 144);
-}
-
-.magic-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* keeps logos clear */
-  padding: 15px;
-  transition: transform 0.3s ease;
-}
-
-    .magic-card.show-card { opacity: 1; transform: translateX(0); }
-    .magic-card:hover { box-shadow: 0 0 20px rgba(255,255,255,0.6);
-    background-color: whitesmoke;}
-
-    /* Flow cards (p4) */
-    .card-track {
-      display: flex;
-      gap: 70px;
-      width: 220%;
-      margin-top: 320px;
-      border-color: aliceblue;
-      background-color: rgb(14, 110, 134);
-      animation: horizontal-flow 13s linear infinite;
-    }
-    .card-track:hover { animation-play-state: paused;background-color: #022a2a; }
-    .flow-card {
-      width: 190px; height: 150px;
-      background: sliver;
-      border-radius: 12px;
-      gap: 70px;
-      display: flex; justify-content: center; align-items: center;
-      color: rgb(17, 16, 16); font-weight: bold;
-      opacity: 0; transform: translateX(-50px);
-      transition: all 0.7s ease;
-    }
-    .flow-card.show-flow { opacity: 1; transform: translateX(0); column-gap: 30px; border-color: rgb(255, 255, 255);}
-    @keyframes horizontal-flow {
-      0% { transform: translateX(0);}
-      100% { transform: translateX(-50%);}
-    }
-  </style>
-</head>
-<body>
-  <!-- Background -->
-  <div class="nebula-bg">
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-    <div class="sparkle"></div><div class="sparkle"></div>
-  </div>
-
-  <!-- Cube pages -->
+  <!-- Cube Pages -->
   <div class="container">
     <div class="pages" id="pages">
 
@@ -426,6 +471,7 @@ color: #ffffff;
         </div>
       </div>
 
+ 
      <div class="page p2">
             <div class="card-container">
     <div class="card card1">
@@ -444,33 +490,10 @@ color: #ffffff;
 
       </div>
 
-  <script>
-    const card = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const mouseX = e.clientX - centerX;
-        const mouseY = e.clientY - centerY;
-
-        const rotateX = (mouseY / (rect.height / 2)) * -15;
-        const rotateY = (mouseX / (rect.width / 2)) * 15;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-      });
-    });
-  </script>
-
-
       <!-- Page 3 -->
       <div class="page p3">
         <div class="magic-card-grid">
-          <div class="magic-card" >
+         <div class="magic-card" >
             <img src="../logoo/AWS.png" alt="Card A" />
           </div>
           <div class="magic-card"> <img src="../logoo/flutter.png" alt="Card A" /></div>
@@ -479,7 +502,6 @@ color: #ffffff;
           <div class="magic-card"> <img src="../logoo/Docker.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/Git.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/GitHub.png" alt  ="Card A" /></div>
-          <div class="magic-card"> <img src="../logoo/Opera.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/Postman.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/Podman.png" alt  ="Card A" /></div>
                     <div class="magic-card"> <img src="../logoo/Keras.png" alt="Card A" /></div>
@@ -493,25 +515,20 @@ color: #ffffff;
        <div class="magic-card"> <img src="../logoo/scikit-learn.png" alt  ="Card A" /></div>
         <div class="magic-card"> <img src="../logoo/Chatgpt.png" alt  ="Card A" /></div>
        <div class="magic-card"> <img src="../logoo/rest.png" alt  ="Card A" /></div>
+                 <div class="magic-card"> <img src="../logoo/grok.png" alt="Card A" /></div>
+<div class="magic-card"> <img src="../logoo/cursor.png" alt="Card A" /></div>
+          <div class="magic-card"> <img src="../logoo/flask.png" alt="Card A" /></div>
+          <div class="magic-card"> <img src="../logoo/kuber.png" alt="Card A" /></div>
+           <div class="magic-card"> <img src="../logoo/open.png" alt="Card A" /></div>
+          <div class="magic-card"> <img src="../logoo/redux.png" alt  ="Card A" /></div>
   
-
-          
-       
         </div>
       </div>
 
       <!-- Page 4 -->
       <div class="page p4">
-         <div class="magic-card-grid2">
-          <div class="magic-card2" >
-            <img src="../logoo/AWS.png" alt="Card A" />
-          </div>
-          <div class="magic-card"> <img src="../logoo/grok.png" alt="Card A" /></div>
-          <div class="magic-card"> <img src="../logoo/cursor.png" alt="Card A" /></div>
-          <div class="magic-card"> <img src="../logoo/flask.png" alt="Card A" /></div>
-          <div class="magic-card"> <img src="../logoo/kuber.png" alt="Card A" /></div>
-           <div class="magic-card"> <img src="../logoo/open.png" alt="Card A" /></div>
-          <div class="magic-card"> <img src="../logoo/redux.png" alt  ="Card A" /></div>
+          <div class="magic-card-grid" id="lastpart">
+          
           <div class="magic-card"> <img src="../logoo/num.png" alt  ="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/redux.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/mat.png" alt="Card A" /></div>
@@ -524,9 +541,8 @@ color: #ffffff;
           <div class="magic-card"> <img src="../logoo/api.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/elv.png" alt="Card A" /></div>
           <div class="magic-card"> <img src="../logoo/Podman.png" alt  ="Card A" /></div>
-             
-          </div>
-          
+        
+        </div>
         <div class="card-track">
           <div class="flow-card"><img src="../logoo/java.png" alt  ="Card A" /></div>
           <div class="flow-card"><img src="../logoo/js.png" alt="cardb"/></div>
@@ -538,277 +554,72 @@ color: #ffffff;
           <div class="flow-card"><img src="../logoo/nodejs.png" alt="cardb"/></div>
           <div class="flow-card"><img src="../logoo/express.png" alt="cardb"/></div>
         </div>
-       
+      </div>
 
     </div>
- 
-<style>
-   /* Magic grid (p3) */
-    .magic-card-grid2 {
-      display: grid;
-      grid-template-columns: repeat(6,1fr);
-      gap: 20px;
-      width: 90%;
-      margin-top: -150px;
-      margin-left: 950px;
-    }
-    .magic-card2 {
-      height: 120px;
-      background: transparent;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: all 0.7s ease;
-    }
-   
+  </div>
 
-
-    .magic-card2.show-card { opacity: 1; transform: translateX(0); }
-    .magic-card2:hover { box-shadow: 0 0 20px rgba(255,255,255,0.6);
-    background-color: whitesmoke;}
-</style>
- <script>
-    // Cube scroll
+  <script>
+    // Cube scroll animation
     let angle = 0, index = 0;
     const pages = document.getElementById("pages");
     const total = 4;
     let scrolling = false;
+
+    // Mouse wheel for desktop
     window.addEventListener("wheel", e => {
       if (scrolling) return;
       scrolling = true;
-      if (e.deltaY > 0 && index < total-1) { index++; angle += 90; }
-      else if (e.deltaY < 0 && index > 0) { index--; angle -= 90; }
+      if (e.deltaY > 0 && index < total - 1) {
+        index++;
+        angle += 90;
+      } else if (e.deltaY < 0 && index > 0) {
+        index--;
+        angle -= 90;
+      }
       pages.style.transform = `translateZ(-500px) rotateX(${angle}deg)`;
-      setTimeout(()=>scrolling=false,1000);
+      setTimeout(() => scrolling = false, 1000);
     });
 
-    // Magic cards fade in
+    // Touch support for mobile
+    let touchStartY = 0;
+    window.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    });
+
+    window.addEventListener('touchend', e => {
+      const touchEndY = e.changedTouches[0].clientY;
+      const diff = touchStartY - touchEndY;
+      
+      if (Math.abs(diff) > 50) {
+        if (scrolling) return;
+        scrolling = true;
+        
+        if (diff > 0 && index < total - 1) {
+          index++;
+          angle += 90;
+        } else if (diff < 0 && index > 0) {
+          index--;
+          angle -= 90;
+        }
+        
+        pages.style.transform = `translateZ(-500px) rotateX(${angle}deg)`;
+        setTimeout(() => scrolling = false, 1000);
+      }
+    });
+
+    // Magic cards fade in animation
     const magic = document.querySelectorAll('.magic-card');
-    const obs = new IntersectionObserver(entries=>{
-      entries.forEach(en=>{
-        if(en.isIntersecting) en.target.classList.add('show-card');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) en.target.classList.add('show-card');
       });
-    },{threshold:0.2});
-    magic.forEach(m=>obs.observe(m));
+    }, { threshold: 0.2 });
+    magic.forEach(m => obs.observe(m));
 
-    // Flow cards fade in stagger
+    // Flow cards staggered animation
     const flow = document.querySelectorAll('.flow-card');
-    flow.forEach((c,i)=>setTimeout(()=>c.classList.add('show-flow'),i*150));
+    flow.forEach((c, i) => setTimeout(() => c.classList.add('show-flow'), i * 150));
   </script>
-  <style>
-    
-  </style>
-  <style>
-   
-/* ==========================
-   ✅ Responsive Design for All Devices
-========================== */
-
-/* --- Large Tablets / Small Laptops --- */
-@media (max-width: 1024px) {
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  /* Header stays clean and centered */
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 20px;
-    height: auto;
-    text-align: center;
-  }
-  .brand {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-  }
-  nav a {
-    margin: 6px 12px;
-    font-size: 15px;
-  }
-
-  /* Layout scaling */
-  .container {
-    perspective: 1000px;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 40px 20px;
-  }
-  .pages {
-    transform: translateZ(-400px);
-  }
-  .page {
-    font-size: 1.3em;
-    padding: 24px;
-    text-align: center;
-  }
-
-  /* Cards */
-  .card-container {
-    flex-direction: column;
-    gap: 25px;
-    align-items: center;
-  }
-  .card {
-    width: 90%;
-    max-width: 360px;
-    height: auto;
-  }
-  .card-img {
-    width: 100%;
-    height: 180px;
-  }
-  .card-text {
-    font-size: 16px;
-    width: 100%;
-  }
-
-  /* Magic cards grid */
-  .magic-card-grid, .magic-card-grid2 {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    width: 95%;
-    margin: 0 auto;
-  }
-  .magic-card img, .magic-card2 img {
-    width: 90%;
-    height: auto;
-    padding: 8px;
-  }
-
-  /* Nebula effect tweak */
-  .nebula-bg .sparkle {
-    width: 4px;
-    height: 4px;
-  }
-  .nebula-bg .sparkle::before {
-    width: 30%;
-    height: 30%;
-  }
-
-  /* Hide 3D animation on smaller screens */
-  #three-canvas,
-  .right-section {
-    display: none !important;
-  }
-}
-
-/* --- Tablets / Medium Devices --- */
-@media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 18px;
-  }
-  nav {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  nav a {
-    font-size: 14px;
-    margin: 5px 10px;
-  }
-
-  .pages {
-    transform: translateZ(-300px);
-  }
-  .page {
-    font-size: 1.2em;
-    padding: 20px;
-  }
-
-  .hero {
-    flex-direction: column;
-    text-align: center;
-    gap: 24px;
-    padding: 30px 16px;
-  }
-
-  .card-text {
-    font-size: 15px;
-  }
-
-  #three-canvas,
-  .right-section {
-    display: none !important;
-  }
-}
-
-/* --- Mobile / Small Screens --- */
-@media (max-width: 480px) {
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
-  }
-  .brand {
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-  }
-  nav a {
-    font-size: 13px;
-    margin: 4px 8px;
-  }
-
-  .page {
-    font-size: 1em;
-    padding: 16px;
-  }
-  .card-text {
-    font-size: 14px;
-  }
-  .hero {
-    padding: 30px 12px;
-    gap: 20px;
-  }
-
-  /* Fully hide 3D animation */
-  #three-canvas,
-  .right-section {
-    display: none !important;
-  }
-
-  .container {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 12px;
-  }
-}
-</style>
-
- 
 </body>
 </html>

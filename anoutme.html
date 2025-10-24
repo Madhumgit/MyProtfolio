@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About Me - Madhumitha</title>
   <link rel="stylesheet" href="style.css">
+  
 </head>
 <body>
   <div id="app">
@@ -235,6 +236,16 @@
                 <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/maildotru.svg" alt="Email">
             </a>
         </div>
+        <div id="footer"></div>
+
+        <script>
+  fetch("footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
+
     </div>
 </body>
 </html>
