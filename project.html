@@ -10,6 +10,8 @@
 
 
 <style>
+
+
 /* reset */
 * { box-sizing: border-box; margin: 0; padding: 0 }
 html, body, #app { height: 100% }
@@ -41,13 +43,13 @@ head {
   display: block;
 }
 .card {
-  width: 500px;
+  width: 550px;
   background: transparent;
   border-radius: 10px;
   overflow: hidden;
-  height: 500px;
+  height: 550px;
   top: 100px;
-  left: 80px;
+  left: 210px;
   gap: 40px;
   color: #1a1a2e;
   position: relative;
@@ -152,12 +154,7 @@ canvas { display: block; }
     justify-content: center; 
     gap: 15px; 
   }
-  .card { 
-    width: 400px; 
-    height: 450px; 
-    top: 50px; 
-    left: 0; 
-  }
+ 
   #card3 { 
     width: 90%; 
     margin-left: 0; 
@@ -243,6 +240,9 @@ canvas { display: block; }
   /* Disable 3D animation for smaller screens */
   canvas, #three-canvas, #bg { display: none !important; }
 }
+/* From Uiverse.io by lenfear23 */ 
+
+
 
 </style>
 
@@ -252,6 +252,43 @@ canvas { display: block; }
 <body>
  
    
+   <button id="but">
+    DEVELOPS
+</button>
+<style>
+  #but {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  width: 350px;
+  height: 100px;
+  justify-items: center;
+  margin-left: 620px;
+  margin-top: 100px;
+background-color: transparent;  border-radius: 30px;
+  border:transparent;
+  transition: all 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 54px;
+  font-weight: 600;
+  color: #606060;
+  text-shadow: 0 2px #fff;
+}
+
+#but:hover {
+  box-shadow: 0 6px 6px 6px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+}
+
+#but:active {
+  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+}
+
+#but:focus {
+  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+}
+</style>
     <div class="card-container">
       <div class="card card1">
         <div class="card-img"></div>
@@ -494,6 +531,7 @@ Built using Python, the system integrates voice recognition, NLP models, and rec
       canvas.height = window.innerHeight;
     });
   </script>
-  
+
+
 </body>
 </html>
