@@ -1,537 +1,576 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project Page</title>
-   
-  <div id="header"></div>
-    
+  <title>Projects - Madhumitha</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-
-<style>
-
-
-/* reset */
-* { box-sizing: border-box; margin: 0; padding: 0 }
-html, body, #app { height: 100% }
-head {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  background: linear-gradient(170deg, #022a2a, #23727b);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  cursor: none; /* hide default cursor */
-}
-
-/* ====== Card Layout ====== */
-.card-container {
-  display: flex;
-  gap: 20px;
-}
-.contain2 {
-  margin-top: 50px;
-  margin-left: 0px;
-  display: flex;
-  gap: 20px;
-}
-#card3 {
-  margin-left: 20px;
-  margin-top: 30px;
-  width: 1000px;
-  display: block;
-}
-.card {
-  width: 550px;
-  background: transparent;
-  border-radius: 10px;
-  overflow: hidden;
-  height: 550px;
-  top: 100px;
-  left: 210px;
-  gap: 40px;
-  color: #1a1a2e;
-  position: relative;
-  transition: all 0.3s ease;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-}
-.card:hover {
-  transform: translateY(-10px);
-  background-color: black;
-  color: whitesmoke;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-}
-.card-img {
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    header {
+  position: fixed;
+  top: 0;
   width: 100%;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
-  position: relative;
-  z-index: 1;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
-.card1 .card-img { background-image:url('../logoo/Bingo.png'); }
-.card6 .card-img { background-image: url('../logoo/i.png'); }
-.card3 .card-img { background-image: url('../logoo/speak.png'); }
-.card4 .card-img { background-image: url('../logoo/SIH.png'); }
-.card2 .card-img { background-image: url('../logoo/gene.png'); }
-.card5 .card-img { background-image: url('../logoo/voice.png'); }
-.card-content { padding: 15px; position: relative; z-index: 1; }
-.tech-tags { display: flex; gap: 10px; margin-bottom: 10px; }
-.tech-tags span {
-  background: #1b3d50;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
+
+header.header-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
 }
-.tech-tags span:hover {
-  background: #1a1a2e;
-  color: #fff;
+    /* Add this to your header/nav */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-.card-text { font-size: 14px; margin-bottom: 15px; }
-.buttons { display: flex; gap: 10px; }
-.buttons a {
-  background: #1a1a2e;
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 12px;
-}
-.card:hover::before { opacity: 0.7; }
-.card:hover .card-img { filter: grayscale(0%); }
-
-/* Canvas/Blob */
-canvas { display: block; }
-#blob { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
-
-/* ====== Media Queries ====== */
-
-/* Large tablets / small laptops */
-@media (max-width: 1024px) {
-  /* Header adjustments */
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    padding: 16px;
-  }
-
-  .brand {
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
+@media (max-width: 768px) {
   nav {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  nav ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px;
+    padding: 0;
+    gap: 10px;
   }
-
-  nav a {
-    font-size: 15px;
-    margin: 4px;
-  }
-
-  /* Card adjustments */
-  .card-container { 
-    flex-wrap: wrap; 
-    justify-content: center; 
-    gap: 15px; 
-  }
- 
-  #card3 { 
-    width: 90%; 
-    margin-left: 0; 
-  }
-
-  /* Disable 3D animation for smaller screens */
-  canvas, #three-canvas, #bg { display: none !important; }
 }
-
-/* Tablets */
 @media (max-width: 768px) {
-  /* Header adjustments */
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    padding: 14px;
+  .logo, .site-title {
+    width: 100%;
+    text-align: center;
   }
-
-  nav a { 
-    font-size: 14px; 
-    margin: 4px 8px; 
-  }
-
-  /* Card adjustments */
-  .card-container, .contain2 { 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 20px; 
-  }
-  span:hover {
-    background: #1a1a2e;
-    color: #fff;
-
-  }
- 
-  .card { 
-    width: 90%; 
-    height: auto; 
-    top: 0; 
-    left: 0; 
-  }
-  .card-img { height: 180px; }
-  .card-text { font-size: 13px; }
-  .tech-tags span { font-size: 11px; padding: 4px 8px; }
- 
-  .buttons a { font-size: 11px; padding: 6px 12px; }
-
-  /* Disable 3D animation for smaller screens */
-  canvas, #three-canvas, #bg { display: none !important; }
 }
 
-/* Mobiles */
-@media (max-width: 480px) {
-  /* Header adjustments */
-  header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    padding: 12px;
-  }
+    /* ── CANVASES ── */
+    #bg-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    #snow-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+    }
 
-  nav a { 
-    font-size: 13px; 
-    margin: 3px; 
-  }
+    header, .page-content, footer { position: relative; z-index: 10; }
 
-  /* Card adjustments */
-  .card { 
-    width: 95%; 
-    height: auto; 
-    top: 0; 
-    left: 0; 
-  }
-  .card-img { height: 150px; }
-  .card-text { font-size: 12px; }
-  .tech-tags { flex-wrap: wrap; gap: 5px; }
-  .buttons { flex-wrap: wrap; gap: 5px; }
-  .buttons a { font-size: 10px; padding: 5px 10px; }
+    /* ── CURSOR ── */
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: #cc2222; border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9999; transition: transform 0.1s;
+    }
+    #cursor-ring {
+      position: fixed; width: 30px; height: 30px;
+      border: 1.5px solid rgba(204,34,34,0.6); border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9998; transition: width 0.2s, height 0.2s, border-color 0.2s;
+    }
+    #cursor-ring.hovered { width: 46px; height: 46px; border-color: rgba(224,80,80,0.85); }
+    #cursor-dot.clicked  { transform: translate(-50%,-50%) scale(0.5); }
 
-  /* Disable 3D animation for smaller screens */
-  canvas, #three-canvas, #bg { display: none !important; }
-}
-/* From Uiverse.io by lenfear23 */ 
+    /* ── HEADER ── */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.75);
+      border-bottom: 1px solid rgba(200,30,30,0.2);
+      position: sticky; top: 0; backdrop-filter: blur(16px);
+    }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: 2px; color: #fff; }
+    .brand-sub  { font-size: 11px; color: #cc2222; margin-top: 3px; letter-spacing: 1px; }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: #aaa; text-decoration: none; font-size: 13px;
+      letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #e03030; }
 
+    /* ── PAGE CONTENT ── */
+    .page-content {
+      padding: 70px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
+    /* ── SECTION HEADING ── */
+    .page-heading { margin-bottom: 56px; }
+    .page-heading h1 {
+      font-size: 44px; font-weight: 800; color: #fff; margin-bottom: 10px;
+    }
+    .page-heading h1 span { color: #cc2222; }
+    .page-heading .divider { width: 55px; height: 3px; background: #cc2222; }
 
-</style>
+    /* ── "DEVELOPS" HERO LABEL ── */
+    .hero-label {
+      display: inline-block;
+      font-size: 48px; font-weight: 800; letter-spacing: 6px;
+      text-transform: uppercase; color: #1f1f1f;
+      text-shadow: 0 2px #2a0000;
+      border: 2px solid rgba(204,34,34,0.15);
+      border-radius: 30px; padding: 18px 56px;
+      margin-bottom: 60px;
+      background: rgba(12,2,2,0.5);
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+    }
+    .hero-label:hover {
+      color: #cc2222;
+      border-color: rgba(204,34,34,0.5);
+      box-shadow: 0 0 40px rgba(204,34,34,0.2), inset 0 0 20px rgba(204,34,34,0.05);
+    }
 
-   
+    /* ── PROJECTS GRID ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
 
+    /* ── CARD ── */
+    .card {
+      background: rgba(12,2,2,0.80);
+      border: 1px solid rgba(204,34,34,0.18);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: all 0.35s ease;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    }
+    .card:hover {
+      border-color: #cc2222;
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(204,34,34,0.3);
+    }
+
+    .card-img {
+      width: 100%; height: 200px;
+      background-size: cover; background-position: center;
+      filter: grayscale(80%) brightness(0.75);
+      transition: filter 0.4s ease;
+    }
+    .card:hover .card-img { filter: grayscale(0%) brightness(1); }
+
+    /* Card image backgrounds */
+    .card1 .card-img { background-image: url('../logoo/Bingo.png'); }
+    .card2 .card-img { background-image: url('../logoo/gene.png'); }
+    .card3 .card-img { background-image: url('../logoo/speak.png'); }
+    .card4 .card-img { background-image: url('../logoo/SIH.png'); }
+    .card5 .card-img { background-image: url('../logoo/voice.png'); }
+    .card6 .card-img { background-image: url('../logoo/mail.png'); }
+
+    .card-content {
+      padding: 20px; flex-grow: 1;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    .card-title {
+      font-size: 16px; font-weight: 700; color: #fff; line-height: 1.4;
+    }
+
+    .card-text {
+      font-size: 13px; color: #999; line-height: 1.75; flex-grow: 1;
+    }
+
+    /* Tech tags */
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tech-tags span {
+      background: rgba(204,34,34,0.18);
+      border: 1px solid rgba(204,34,34,0.3);
+      color: #e07070; padding: 4px 10px;
+      border-radius: 4px; font-size: 11px;
+      letter-spacing: 0.5px; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .tech-tags span:hover {
+      background: rgba(204,34,34,0.35);
+      color: #fff; border-color: #cc2222;
+    }
+
+    /* Buttons */
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .buttons a {
+      background: #cc2222; color: #fff;
+      padding: 8px 18px; border-radius: 6px;
+      text-decoration: none; font-size: 12px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .buttons a:hover { background: #e03030; transform: translateY(-2px); }
+    .buttons a.outline {
+      background: transparent;
+      border: 1.5px solid rgba(204,34,34,0.5);
+      color: #cc2222;
+    }
+    .buttons a.outline:hover { background: rgba(204,34,34,0.12); border-color: #cc2222; color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(135deg,#0f0000 0%,#1a0505 40%,#220000 70%,#0a0a0a 100%);
+      border-top: 1px solid rgba(204,34,34,0.3); padding: 48px 48px 28px;
+      position: relative; z-index: 10;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .footer-name { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #fff; margin-bottom: 6px; }
+    .footer-tagline { font-size: 13px; color: #cc2222; letter-spacing: 1px; margin-bottom: 24px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+    .footer-links a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #cc2222; }
+    .footer-bar { width: 60px; height: 1px; background: rgba(204,34,34,0.35); margin: 0 auto 16px; }
+    .footer-copy { font-size: 12px; color: #333; }
+    .footer-copy span { color: #cc2222; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { gap: 14px; }
+      .page-content { padding: 50px 20px 60px; }
+      .page-heading h1 { font-size: 30px; }
+      .hero-label { font-size: 28px; padding: 14px 32px; letter-spacing: 3px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { padding: 30px 20px 20px; }
+    }
+    @media (max-width: 480px) {
+      .projects-grid { grid-template-columns: 1fr; gap: 20px; }
+      .card-img { height: 160px; }
+    }
+  </style>
 </head>
 <body>
- 
+
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="snow-canvas"></canvas>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+<script>
+    let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    // Scrolling DOWN — hide header
+    document.querySelector('header').classList.add('header-hidden');
+  } else {
+    // Scrolling UP — show header
+    document.querySelector('header').classList.remove('header-hidden');
+  }
+
+  lastScrollY = currentScrollY;
+});
+</script>
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="brand-name">MADHUMITHA</div>
+      <div class="brand-sub">Full Stack · Machine Learning</div>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Skill.html">Skills</a>
+      <a href="project.html" class="active">Projects</a>
+      <a href="experience.html">Experiments</a>
+      <a href="cert.html">Certificates</a>
+    </nav>
+  </header>
+
+  <!-- Page Content -->
+  <div class="page-content">
+
    
-   <button id="but">
-    DEVELOPS
-</button>
-<style>
-  #but {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  cursor: pointer;
-  width: 350px;
-  height: 100px;
-  justify-items: center;
-  margin-left: 620px;
-  margin-top: 100px;
-background-color: transparent;  border-radius: 30px;
-  border:transparent;
-  transition: all 0.2s ease;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 54px;
-  font-weight: 600;
-  color: #606060;
-  text-shadow: 0 2px #fff;
-}
 
-#but:hover {
-  box-shadow: 0 6px 6px 6px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
-}
+    <div class="hero-label">DEVELOPS</div>
 
-#but:active {
-  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
-}
+    <div class="projects-grid">
 
-#but:focus {
-  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
-}
-</style>
-    <div class="card-container">
+      <!-- Card 1 -->
       <div class="card card1">
         <div class="card-img"></div>
         <div class="card-content">
           <div class="tech-tags">
-            <span>React</span>
-            <span>Node.js</span>
-            <span>CursorAi</span>
-            <span>MangoDb</span>
+            <span>React</span><span>Node.js</span><span>Cursor AI</span><span>MongoDB</span>
           </div>
+          <div class="card-title">Game Development by Cursor AI</div>
           <div class="card-text">
-            <strong>Game Development by cursor ai</strong><br>
-Developed an intelligent Bingo game using Python with Cursor AI integration. Implemented automated number generation, real-time win validation, and an interactive console interface. Leveraged Cursor AI for optimized code structuring and debugging, enhancing gameplay logic and performance. The project focuses on providing a fun, efficient, and AI-assisted gaming experience.          </div>
+            Developed an intelligent Bingo game using Python with Cursor AI integration. Implemented automated number generation, real-time win validation, and an interactive console interface. Leveraged Cursor AI for optimized code structuring and debugging, enhancing gameplay logic and performance.
+          </div>
           <div class="buttons">
-            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_emotionalbreakthrough-aihashtag-codinghashtag-activity-7371356087800885248-_Nbb?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
-            <a href="https://github.com/Madhumgit/cursor">Source Code</a>
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_emotionalbreakthrough-aihashtag-codinghashtag-activity-7371356087800885248-_Nbb?utm_source=share&utm_medium=member_desktop" target="_blank">Post</a>
+            <a href="https://github.com/Madhumgit/cursor" target="_blank" class="outline">Source Code</a>
           </div>
         </div>
       </div>
+
+      <!-- Card 2 -->
       <div class="card card2">
-        <div class="card-img" ></div>
+        <div class="card-img"></div>
         <div class="card-content">
           <div class="tech-tags">
-            <span>Html</span>
-            <span>CSS</span>
-            <span>Python</span>
-            <span>Django</span>
+            <span>HTML</span><span>CSS</span><span>Python</span><span>Django</span>
           </div>
+          <div class="card-title">AI Image Generator</div>
           <div class="card-text">
-            <strong>AI Image Generator</strong><br>
-Built an AI-powered web app that converts text prompts into images using FastAPI and Python. Features include real-time image generation, dynamic static file serving, and API routes optimized for frontend integration. Tech stack: Python, FastAPI, Uvicorn, PIL, Replicate API. Excited to deploy soon and connect with others working on AI/web projects!          </div>
+            Built an AI-powered web app that converts text prompts into images using FastAPI and Python. Features include real-time image generation, dynamic static file serving, and API routes optimized for frontend integration. Tech stack: Python, FastAPI, Uvicorn, PIL, Replicate API.
+          </div>
           <div class="buttons">
-            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_ai-machinelearning-python-activity-7343300594679324672-k9xD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
-            <a href="https://github.com/Madhumgit/image-gen-webapp">Source Code</a>
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_ai-machinelearning-python-activity-7343300594679324672-k9xD?utm_source=share&utm_medium=member_desktop" target="_blank">Post</a>
+            <a href="https://github.com/Madhumgit/image-gen-webapp" target="_blank" class="outline">Source Code</a>
           </div>
         </div>
       </div>
-    </div>
-    <div class="contain2">
-     <div class="card-container">
+
+      <!-- Card 3 -->
       <div class="card card3">
-        <div class="card-img" ></div>
+        <div class="card-img"></div>
         <div class="card-content">
           <div class="tech-tags">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>FaceAPI</span>
-            <span>WikipedieAPI</span>
+            <span>HTML</span><span>CSS</span><span>FaceAPI</span><span>Wikipedia API</span>
           </div>
+          <div class="card-title">AI Voice Assistant like Alexa</div>
           <div class="card-text">
-            <strong>AI Voice Assistant like Alexa</strong><br>
- Using FastAPI, SpeechRecognition, and PyAudio.Developed a Python-based Voice Assistant capable of recognizing and responding to commands like searching Wikipedia, opening websites and playing music. Integrated SpeechRecognition, WolframAlpha API, and other tools for a smooth conversational experience. Enhanced skills in AI, NLP, and real-time system integration.          </div>
+            Developed a Python-based Voice Assistant capable of recognizing and responding to commands like searching Wikipedia, opening websites, and playing music. Integrated SpeechRecognition, WolframAlpha API, and other tools for a smooth conversational experience.
+          </div>
           <div class="buttons">
-            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_excited-what-new-activity-7338551048988479490-K_YD?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
-            <a href="https://github.com/Madhumgit/voice-maker">Source Code</a>
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_excited-what-new-activity-7338551048988479490-K_YD?utm_source=share&utm_medium=member_desktop" target="_blank">Post</a>
+            <a href="https://github.com/Madhumgit/voice-maker" target="_blank" class="outline">Source Code</a>
           </div>
         </div>
       </div>
+
+      <!-- Card 4 -->
       <div class="card card4">
         <div class="card-img"></div>
         <div class="card-content">
           <div class="tech-tags">
-            <span>React</span>
-            <span>CSS</span>
-            <span>RestAPI</span>
-            <span>Flask</span>
-            <span>PostgreSQL</span>
+            <span>React</span><span>CSS</span><span>Rest API</span><span>Flask</span><span>PostgreSQL</span>
           </div>
+          <div class="card-title">Automatic Timetable Scheduler</div>
           <div class="card-text">
-            <strong>Automatic Time Table Scheduler</strong><br>
-Our team selected as top 50 out of 200+ teams at the Smart India Hackathon selection round. We built an Automatic College Timetable Scheduler using AI and dynamic scheduling to simplify and optimize timetable generation. Amazing experience presenting our solution, gaining feedback, and learning the value of teamwork.          </div>
+            Our team was selected as top 50 out of 200+ teams at the Smart India Hackathon selection round. Built an Automatic College Timetable Scheduler using AI and dynamic scheduling to simplify and optimize timetable generation across departments.
+          </div>
           <div class="buttons">
-            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_sih-smartindiahackathon-teamwork-activity-7374110321571004416-Y4Cl?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
-            <a href="https://github.com/Madhumgit/AutoTimeScheduler">Source Code</a>
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_sih-smartindiahackathon-teamwork-activity-7374110321571004416-Y4Cl?utm_source=share&utm_medium=member_desktop" target="_blank">Post</a>
+            <a href="https://github.com/Madhumgit/AutoTimeScheduler" target="_blank" class="outline">Source Code</a>
           </div>
         </div>
       </div>
-    </div>
-</div>
-<div class="contain3">
- <div class="card-container">
-  
-      <div class="card card5" id="card3">
+
+      <!-- Card 5 -->
+      <div class="card card5">
         <div class="card-img"></div>
         <div class="card-content">
           <div class="tech-tags">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>OpenAPI</span>
-            <span>Python</span>
+            <span>HTML</span><span>CSS</span><span>OpenAI API</span><span>Python</span>
           </div>
+          <div class="card-title">Music Recommendation System</div>
           <div class="card-text">
-            <strong>Music Recommendation</strong><br>
-The Music Recommendation System is an AI-driven project designed to suggest songs based on user preferences and voice interactions. It utilizes Natural Language Processing (NLP) to understand user input and recommend music that matches their mood or query. The system combines machine learning algorithms with audio feature analysis to deliver accurate and personalized song suggestions.
-
-Built using Python, the system integrates voice recognition, NLP models, and recommendation algorithms such as collaborative filtering and content-based filtering. It enhances user experience by enabling seamless, voice-based interaction and personalized recommendations, making music discovery more intuitive and engaging.          <div class="buttons">
-            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_playsound-warnings-activity-7253253895483793408-NS72?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0">Post</a>
-            <a href="https://github.com/Madhumgit/voice-maker">Source Code</a>
+            An AI-driven project that suggests songs based on user preferences and voice interactions. Uses NLP to understand input and recommend music matching mood or query. Integrates collaborative filtering and content-based filtering with voice recognition for an intuitive, personalized experience.
+          </div>
+          <div class="buttons">
+            <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_playsound-warnings-activity-7253253895483793408-NS72?utm_source=share&utm_medium=member_desktop" target="_blank">Post</a>
+            <a href="https://github.com/Madhumgit/voice-maker" target="_blank" class="outline">Source Code</a>
           </div>
         </div>
       </div>
- </div>
-    
- 
-  
 
+      <!-- Card 6 (placeholder for future project) -->
+      <div class="card card6">
+        <div class="card-img"></div>
+        <div class="card-content">
+          <div class="tech-tags">
+            <span>Python</span><span>Flask</span><span>ML/DL</span><span>PostgreSQL</span>
+          </div>
+          <div class="card-title">MailMind-Assistant</div>
+          <div class="card-text">
+MailMind AI is an intelligent email assistant designed to automate email management by fetching, analyzing, and 
+organizing emails in real time. The system also generates 
+smart, context-aware replies, reducing manual effort and improving productivity. Built using Flask for the backend and React 
+for the frontend, with Supabase for database management, MailMind AI is deployed on cloud platforms like Render 
+and Vercel, ensuring scalability and seamless performance.          </div>
+          <div class="buttons">
+            <a href="https://medium.com/@mithamadhu8785/i-built-an-ai-that-reads-my-emails-so-i-dont-have-to-here-s-what-actually-happened-ff3d5e955d07" target="_blank">Medium</a>
+            <a href="https://github.com/Madhumgit/Mail-Mind-AI" target="_blank">Source Code</a>
+          </div>
+        </div>
+      </div>
 
+    </div>
+  </div>
 
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-name">MADHUMITHA</div>
+      <div class="footer-tagline">AI · Machine Learning · Full Stack</div>
+      <div class="footer-links">
+        <a href="Skill.html">Skills</a>
+        <a href="project.html">Projects</a>
+        <a href="experience.html">Experiments</a>
+        <a href="cert.html">Certificates</a>
+        <a href="../aboutme.html">About</a>
+      </div>
+      <div class="footer-bar"></div>
+      <div class="footer-copy">© 2026 <span>Madhumitha</span> · Built with passion &amp; code</div>
+    </div>
+  </footer>
 
-<script>
-  // Get the placeholder div
-  const headerContainer = document.getElementById('header');
-
-  // Fetch header.html
-  fetch('header.html')
-    .then(response => response.text())
-    .then(data => {
-      headerContainer.innerHTML = data;
-
-      // Optional: add hover effect for cursor on links
-      const links = headerContainer.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-      });
-    })
-    .catch(err => console.error('Failed to load header:', err));
-</script>
- <div id="cursor" aria-hidden="true"></div>
-
-  <!-- Scripts -->
-  <script src="header.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
-    const cursor = document.getElementById('cursor');
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let posX = mouseX, posY = mouseY;
-    const speed = 0.18;
+  // ── GLOBAL 3D BACKGROUND ─────────────────────────────────────────────
+  (function () {
+    const bgCanvas   = document.getElementById('bg-canvas');
+    const bgScene    = new THREE.Scene();
+    const bgCamera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+    bgRenderer.setSize(window.innerWidth, window.innerHeight);
+    bgRenderer.setPixelRatio(window.devicePixelRatio);
+    bgCamera.position.z = 6;
 
-    // Load header first
-    fetch("header.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(3.5, 0.6, 18, 80),
+      new THREE.MeshBasicMaterial({ color: 0x330000, wireframe: true, transparent: true, opacity: 0.18 })
+    );
+    torus.position.set(5, -1, -4);
+    bgScene.add(torus);
 
-        // Add cursor hover to links/buttons after header loads
-        const interactive = document.querySelectorAll('a, button, .clickable');
-        interactive.forEach(el => {
-          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
-          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
-        });
-      });
+    const ico = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.8, 1),
+      new THREE.MeshBasicMaterial({ color: 0x550000, wireframe: true, transparent: true, opacity: 0.15 })
+    );
+    ico.position.set(-5, 2, -3);
+    bgScene.add(ico);
 
-    // Smooth-follow cursor
+    const pCount = 350;
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random() - 0.5) * 24;
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    bgScene.add(new THREE.Points(pGeo,
+      new THREE.PointsMaterial({ size: 0.04, color: 0xcc2222, transparent: true, opacity: 0.3 })
+    ));
+
+    for (let i = 0; i < 12; i++) {
+      const pts = [
+        new THREE.Vector3((Math.random()-0.5)*20, (Math.random()-0.5)*14, (Math.random()-0.5)*8),
+        new THREE.Vector3((Math.random()-0.5)*20, (Math.random()-0.5)*14, (Math.random()-0.5)*8)
+      ];
+      bgScene.add(new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0x440000, transparent: true, opacity: 0.1 })
+      ));
+    }
+
+    let mouseNX = 0, mouseNY = 0;
     window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.classList.remove('cursor--hide');
+      mouseNX = (e.clientX / window.innerWidth  - 0.5) * 0.4;
+      mouseNY = (e.clientY / window.innerHeight - 0.5) * 0.3;
     });
 
-    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
-    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+    (function bgAnimate() {
+      requestAnimationFrame(bgAnimate);
+      torus.rotation.x += 0.003; torus.rotation.y += 0.004;
+      ico.rotation.x   += 0.004; ico.rotation.z   += 0.003;
+      bgCamera.position.x += (mouseNX - bgCamera.position.x) * 0.03;
+      bgCamera.position.y += (-mouseNY - bgCamera.position.y) * 0.03;
+      bgCamera.lookAt(bgScene.position);
+      bgRenderer.render(bgScene, bgCamera);
+    })();
 
-    function raf() {
-      posX += (mouseX - posX) * speed;
-      posY += (mouseY - posY) * speed;
-      cursor.style.left = posX + 'px';
-      cursor.style.top = posY + 'px';
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-   
-    window.addEventListener('mouseup', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    window.addEventListener('resize', () => {
+      bgRenderer.setSize(window.innerWidth, window.innerHeight);
+      bgCamera.aspect = window.innerWidth / window.innerHeight;
+      bgCamera.updateProjectionMatrix();
     });
+  })();
 
+  // ── SNOW ──────────────────────────────────────────────────────────────
+  (function () {
+    const sc  = document.getElementById('snow-canvas');
+    const ctx = sc.getContext('2d');
+    sc.width  = window.innerWidth;
+    sc.height = window.innerHeight;
+    const flakes = Array.from({ length: 130 }, () => ({
+      x: Math.random() * sc.width, y: Math.random() * sc.height,
+      r: 0.8 + Math.random() * 2.2, speed: 0.4 + Math.random() * 1.2,
+      drift: (Math.random() - 0.5) * 0.4, opacity: 0.15 + Math.random() * 0.45
+    }));
+    (function drawSnow() {
+      ctx.clearRect(0, 0, sc.width, sc.height);
+      flakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
+        ctx.fill();
+        f.y += f.speed; f.x += f.drift;
+        if (f.y > sc.height + 4) { f.y = -4; f.x = Math.random() * sc.width; }
+        if (f.x > sc.width  + 4) f.x = -4;
+        if (f.x < -4)            f.x = sc.width + 4;
+      });
+      requestAnimationFrame(drawSnow);
+    })();
+    window.addEventListener('resize', () => { sc.width = window.innerWidth; sc.height = window.innerHeight; });
+  })();
+
+  // ── CURSOR ───────────────────────────────────────────────────────────
+  (function () {
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function loop() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      dot.style.left  = mx + 'px'; dot.style.top   = my + 'px';
+      ring.style.left = rx + 'px'; ring.style.top  = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+    window.addEventListener('mousedown', () => dot.classList.add('clicked'));
+    window.addEventListener('mouseup',   () => dot.classList.remove('clicked'));
+    window.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+    window.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+  })();
+
+  // ── CARD SCROLL REVEAL ────────────────────────────────────────────────
+  (function () {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((c, i) => {
+      c.style.opacity = '0';
+      c.style.transform = 'translateY(32px)';
+      c.style.transition = `opacity 0.6s ease ${i * 0.08}s, transform 0.6s ease ${i * 0.08}s, border-color 0.35s, box-shadow 0.35s`;
+    });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    cards.forEach(c => obs.observe(c));
+  })();
   </script>
-
-
-
-
-  <style>
-   
-    canvas {
-      display: block;
-    }
-    #blob {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;  /* push behind content */
-  pointer-events: none; /* allow clicks through */
-}
-
-  </style>
-   <canvas id="blob"></canvas>
-
-  <script>
-    const canvas = document.getElementById("blob");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const w = canvas.width;
-    const h = canvas.height;
-
-    let angle = 0;
-
-    function drawBlob() {
-      ctx.clearRect(0, 0, w, h);
-
-      const x = w / 2 + Math.cos(angle) * 150;
-      const y = h / 2 + Math.sin(angle) * 150;
-
-      const radius = 80 + Math.sin(angle * 2) * 20;
-
-      // Neon glow
-      const gradient = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
-      gradient.addColorStop(0, "rgba(0,255,200,1)");
-      gradient.addColorStop(1, "rgba(0,0,0,0)");
-
-      ctx.beginPath();
-      ctx.fillStyle = gradient;
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
-
-      angle += 0.02;
-      requestAnimationFrame(drawBlob);
-    }
-
-    drawBlob();
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
-
-
 </body>
 </html>

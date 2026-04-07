@@ -3,361 +3,487 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Timeline</title>
-  <div id="header"></div>
-  <script>
-  // Get the placeholder div
-  const headerContainer = document.getElementById('header');
+  <title>Experience - Madhumitha</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  // Fetch header.html
-  fetch('header.html')
-    .then(response => response.text())
-    .then(data => {
-      headerContainer.innerHTML = data;
-
-      // Optional: add hover effect for cursor on links
-      const links = headerContainer.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-        link.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-      });
-    })
-    .catch(err => console.error('Failed to load header:', err));
-</script>
- <div id="cursor" aria-hidden="true"></div>
-
-  <!-- Scripts -->
-  <script src="header.js"></script>
-  <script>
-    const cursor = document.getElementById('cursor');
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let posX = mouseX, posY = mouseY;
-    const speed = 0.18;
-
-    // Load header first
-    fetch("header.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-
-        // Add cursor hover to links/buttons after header loads
-        const interactive = document.querySelectorAll('a, button, .clickable');
-        interactive.forEach(el => {
-          el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-          el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
-          el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
-        });
-      });
-
-    // Smooth-follow cursor
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.classList.remove('cursor--hide');
-    });
-
-    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
-    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
-
-    function raf() {
-      posX += (mouseX - posX) * speed;
-      posY += (mouseY - posY) * speed;
-      cursor.style.left = posX + 'px';
-      cursor.style.top = posY + 'px';
-      requestAnimationFrame(raf);
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      cursor: none;
     }
-    requestAnimationFrame(raf);
-
-   
-    window.addEventListener('mouseup', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-
-  </script>
-
- <style>
-* { box-sizing: border-box; margin: 0; padding: 0 }
-html, body, #app { height: 100% }
-body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  cursor: none; /* hide default cursor */
-}
-
-/* Background star effect */
-.stars {
+    header {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: transparent;
-  overflow: hidden;
-}
-.stars span {
-  position: absolute;
-  display: block;
-  width: 2px;
-  height: 2px;
-  background: white;
-  animation: twinkle 5s infinite;
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.5); }
-}
-
-/* Timeline container */
-.timeline {
-  position: relative;
-  max-width: 1000px;
-  margin: 100px auto;
-  padding: 20px;
-}
-.timeline p {
-  text-align: left;
-}
-.timeline h4,h3 {
-  text-align: left;
-  background: linear-gradient(45deg, #ff0057, #ff7b00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Vertical line */
-.timeline::after {
-  content: '';
-  position: absolute;
-  width: 4px;
-  background: #ff0057;
   top: 0;
-  bottom: 0;
-  left: 50%;
-  margin-left: -2px;
-}
-
-/* Cards */
-.timeline-item {
-  padding: 20px;
-  position: relative;
-  width: 50%;
-}
-
-.timeline-item .card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  transform-style: preserve-3d;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.9s ease forwards;
-}
-@keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-.timeline-item .card:hover {
-  transform: rotateY(10deg) rotateX(10deg) scale(1.05);
-  box-shadow: 0 12px 30px rgba(255, 0, 87, 0.6);
-  background-color: black;
-  color: white;
-}
-
-/* Left side */
-.timeline-item.left {
-  left: -50px;
-  text-align: right;
-}
-.timeline-item.left::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  right: -10px;
-  border: 10px solid transparent;
-  border-left: 10px solid #ff0057;
-}
-
-/* Right side */
-.timeline-item.right {
-  left: 55%;
-  text-align: left;
-}
-.timeline-item.right::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: -10px;
-  border: 10px solid transparent;
-  border-right: 10px solid #ff0057;
-}
-
-/* Images inside card */
-.card img {
   width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Glowing button */
-.btn-3d {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: linear-gradient(45deg, #ff0057, #ff7b00);
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(255, 0, 87, 0.5);
+header.header-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
 }
-.btn-3d:hover {
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 10px 25px rgba(255, 0, 87, 0.8);
+    /* Add this to your header/nav */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-
-/* ===== Media Queries ===== */
-@media screen and (max-width: 1024px)
-
-{
-  header {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 768px) {
+  nav {
+    width: 100%;
+    text-align: center;
     justify-content: center;
-    height: 80px;
-    padding: 16px;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    gap: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .logo, .site-title {
     width: 100%;
-  }
-  .timeline {
-    max-width: 100%;
-  }
-  .timeline-item.left, .timeline-item.right {
-    width: 100%;
-    left: 0;
-  }
-  .timeline::after {
-    left: 20px;
-  }
-  .timeline-item.left::before, .timeline-item.right::before {
-    left: 15px;
-    border: 10px solid transparent;
-    border-right: 10px solid #ff0057;
+    text-align: center;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .timeline {
-    margin: 50px auto;
-    padding: 10px;
-  }
-  .timeline-item .card {
-    padding: 15px;
-  }
-  .card img {
-    height: auto;
-  }
-  .btn-3d {
-    padding: 8px 15px;
-    font-size: 14px;
-  }
-}
+    #bg-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    #snow-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+    }
 
-@media screen and (max-width: 480px) {
-  .timeline {
-    margin: 30px auto;
-    padding: 5px;
-  }
-  .timeline-item .card {
-    padding: 10px;
-    font-size: 14px;
-  }
-  .card img {
-    height: auto;
-  }
-  .btn-3d {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-}
-</style>
+    header, .timeline-wrap, footer { position: relative; z-index: 10; }
 
+    /* CURSOR */
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: #cc2222; border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9999; transition: transform 0.1s;
+    }
+    #cursor-ring {
+      position: fixed; width: 30px; height: 30px;
+      border: 1.5px solid rgba(204,34,34,0.6); border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9998; transition: width 0.2s, height 0.2s, border-color 0.2s;
+    }
+    #cursor-ring.hovered { width: 46px; height: 46px; border-color: rgba(224,80,80,0.85); }
+    #cursor-dot.clicked  { transform: translate(-50%,-50%) scale(0.5); }
+
+    /* HEADER */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.75);
+      border-bottom: 1px solid rgba(200,30,30,0.2);
+      position: sticky; top: 0; backdrop-filter: blur(16px);
+    }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: 2px; color: #fff; }
+    .brand-sub  { font-size: 11px; color: #cc2222; margin-top: 3px; letter-spacing: 1px; }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: #aaa; text-decoration: none; font-size: 13px;
+      letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #e03030; }
+
+    /* TIMELINE WRAPPER */
+    .timeline-wrap {
+      padding: 80px 20px 60px;
+    }
+
+    /* PAGE HEADING */
+    .page-heading {
+      text-align: center; margin-bottom: 60px;
+    }
+    .page-heading h1 {
+      font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 10px;
+    }
+    .page-heading h1 span { color: #cc2222; }
+    .page-heading .divider {
+      width: 60px; height: 3px; background: #cc2222; margin: 0 auto;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative; max-width: 1000px; margin: 0 auto; padding: 20px;
+    }
+    .timeline::after {
+      content: ''; position: absolute; width: 3px;
+      background: linear-gradient(to bottom, transparent, #cc2222 10%, #cc2222 90%, transparent);
+      top: 0; bottom: 0; left: 50%; margin-left: -1.5px;
+    }
+
+    /* CARDS */
+    .timeline-item {
+      padding: 20px; position: relative; width: 50%;
+    }
+    .timeline-item .card {
+      background: rgba(12,2,2,0.80);
+      border: 1px solid rgba(204,34,34,0.2);
+      border-radius: 14px; padding: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s;
+      opacity: 0; transform: translateY(24px);
+      animation: fadeUp 0.9s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .timeline-item .card:hover {
+      transform: rotateY(6deg) rotateX(4deg) scale(1.03);
+      box-shadow: 0 16px 40px rgba(204,34,34,0.35);
+      border-color: #cc2222;
+    }
+
+    .timeline-item.left  { left: -50px; text-align: right; }
+    .timeline-item.right { left: 55%; text-align: left; }
+
+    /* Pointer arrows */
+    .timeline-item.left::before {
+      content: ''; position: absolute; top: 28px; right: -10px;
+      border: 10px solid transparent; border-left: 10px solid #cc2222;
+    }
+    .timeline-item.right::before {
+      content: ''; position: absolute; top: 28px; left: -10px;
+      border: 10px solid transparent; border-right: 10px solid #cc2222;
+    }
+
+    /* Timeline dot */
+    .timeline-item::after {
+      content: ''; position: absolute; top: 24px;
+      width: 14px; height: 14px; background: #cc2222;
+      border: 2px solid #0a0a0a; border-radius: 50%; z-index: 1;
+    }
+    .timeline-item.left::after  { right: -57px; }
+    .timeline-item.right::after { left: -57px; }
+
+    .card img {
+      width: 100%; border-radius: 10px; margin-bottom: 14px;
+      object-fit: cover; max-height: 180px;
+      filter: brightness(0.9) saturate(0.9);
+      transition: filter 0.3s;
+    }
+    .card:hover img { filter: brightness(1) saturate(1.1); }
+
+    .card h3 {
+      font-size: 17px; font-weight: 800; margin-bottom: 6px;
+      background: linear-gradient(45deg, #cc2222, #ff7070);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1.4;
+    }
+    .card h4 {
+      font-size: 13px; color: #888; font-weight: 400;
+      margin-bottom: 12px; letter-spacing: 0.5px;
+    }
+    .card p {
+      font-size: 14px; color: #aaa; line-height: 1.75;
+      text-align: left;
+    }
+
+    .btn-3d {
+      margin-top: 16px; padding: 10px 22px;
+      background: linear-gradient(45deg, #aa1515, #cc2222);
+      color: white; font-weight: 700; border: none;
+      border-radius: 30px; cursor: pointer; font-size: 13px;
+      letter-spacing: 1px; text-transform: uppercase;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(204,34,34,0.35);
+    }
+    .btn-3d:hover {
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 10px 28px rgba(204,34,34,0.6);
+      background: linear-gradient(45deg, #cc2222, #e04040);
+    }
+    .btn-3d a { color: inherit; text-decoration: none; }
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg,#0f0000 0%,#1a0505 40%,#220000 70%,#0a0a0a 100%);
+      border-top: 1px solid rgba(204,34,34,0.3); padding: 48px 48px 28px;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .footer-name { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #fff; margin-bottom: 6px; }
+    .footer-tagline { font-size: 13px; color: #cc2222; letter-spacing: 1px; margin-bottom: 24px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+    .footer-links a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #cc2222; }
+    .footer-bar { width: 60px; height: 1px; background: rgba(204,34,34,0.35); margin: 0 auto 16px; }
+    .footer-copy { font-size: 12px; color: #333; }
+    .footer-copy span { color: #cc2222; }
+
+    @media screen and (max-width: 1024px) {
+      .timeline::after { left: 20px; }
+      .timeline-item, .timeline-item.left, .timeline-item.right {
+        width: 100%; left: 0; text-align: left;
+      }
+      .timeline-item.left::before, .timeline-item.right::before {
+        left: 8px; right: auto;
+        border: 10px solid transparent; border-right: 10px solid #cc2222;
+      }
+      .timeline-item.left::after, .timeline-item.right::after { left: 13px; right: auto; }
+    }
+
+    @media screen and (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { gap: 14px; }
+      .page-heading h1 { font-size: 28px; }
+      .timeline { padding: 10px; }
+      .timeline-item .card { padding: 16px; }
+      footer { padding: 30px 20px 20px; }
+    }
+  </style>
 </head>
 <body>
+<script>
+    let lastScrollY = window.scrollY;
 
-  <!-- Background stars -->
-  <div class="stars">
-    <span style="top:10%;left:20%;animation-delay:0s;"></span>
-    <span style="top:30%;left:50%;animation-delay:2s;"></span>
-    <span style="top:70%;left:80%;animation-delay:4s;"></span>
-    <span style="top:60%;left:10%;animation-delay:6s;"></span>
-    <span style="top:40%;left:90%;animation-delay:3s;"></span>
-  </div>
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
 
-  <!-- Timeline -->
-  <div class="timeline">
-    <div class="timeline-item left">
-      <div class="card">
-        <img src="../logoo/kalv.png" alt="Experiment 1">
-        <h3>Internship – KALV Consultants and Facilitators Ltd</h3>
-<h4>Position: Software & IT Intern (Remote, Ongoing)</h4>
-        <p>
-
-I am currently working as a remote intern at KALV Consultants, contributing as both a Full-Stack Developer and a Machine Learning Engineer. I collaborated with colleagues to design, develop, and successfully deploy a full-featured web application. Currently, I am focused on developing AI and machine learning solutions, applying real-world data to build and deploy models. This experience allows me to strengthen my technical skills, work on impactful projects, and gain valuable professional mentorship in both software development and machine learning..</p>
-       <a href="https://github.com/kalvUK/web_01"><button class="btn-3d">View More</button></a>
-      </div>
-    </div>
-    <div class="timeline-item right">
-      <div class="card">
-        <img src="../logoo/techno.png" alt="Experiment 2">
-        <h3>Machine Learning Internship at TechnoHacks Solutions Pvt. Ltd.</h3>
-        <p>I successfully completed a Machine Learning internship at TechnoHacks Solutions Pvt. Ltd. from June 8, 2025, to July 7, 2025. During this internship, I gained hands-on experience in implementing machine learning algorithms, analyzing datasets, and solving real-world problems. I worked on projects involving data preprocessing, model building, and performance evaluation, which enhanced my understanding of various ML techniques. My contributions were recognized for consistency, dedication, and a strong work ethic, helping me strengthen both my technical skills and professional approach. This experience also improved my problem-solving abilities, teamwork, and communication skills, preparing me to take on more complex challenges in the field of artificial intelligence and data science.</p>
-        <button class="btn-3d">View More</button>
-      </div>
-    </div>
-    <div class="timeline-item left">
-      <div class="card">
-        <img src="../logoo/codesoft.png" alt="Experiment 3">
-        <h3>Machine Learning Virtual Internship at CodSoft</h3>
-        <p>I successfully completed a 4-week virtual internship in Machine Learning at CodSoft from March 5, 2024, to April 5, 2024. During this program, I gained hands-on experience in implementing machine learning algorithms, working on real-world projects, and applying data-driven solutions. My skills and contributions were recognized for excellence, showcasing my dedication, problem-solving abilities, and technical expertise. This internship strengthened both my practical ML knowledge and professional approach, preparing me for advanced challenges in artificial intelligence and data science.</p>
-        <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_movie-activity-7186271068859305984-1u4u?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0"><button class="btn-3d">View More</button></a>
-      </div>
-    </div>
-        <div class="timeline-item right">
-      <div class="card">
-        <img src="../logoo/offer at appxcess.png" alt="Experiment 4">
-        <h3>Full Stack Developer Internship at Appxces (ongoing)</h3>
-<p>
-  In October 2025, I received an offer to join AppXcess Technologies, Coimbatore, as a Full Stack Engineer Intern for a six-month, on-site program. This role provides structured, real-world exposure to full-stack application development under the guidance of experienced engineers. The internship begins with a two-month probation period focused on skill development and familiarization with the company’s technology stack, followed by a monthly stipend from the third month onward. Throughout the internship, I will be contributing to live product initiatives, participating in end-to-end development cycles, and applying industry-standard practices across frontend, backend, and database workflows. This opportunity strengthens my technical foundation while enabling me to gain practical experience in building scalable, production-ready solutions within a professional engineering environment.
-</p>        <button class="btn-3d">View More</button>
-      </div>
-    </div>
-       </div>
-      
-   
-   
-  </div>
-<style>
-  .card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.9s ease forwards;
-  /* optional initial delay */
-  /* animation-delay: 0.2s; */
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    // Scrolling DOWN — hide header
+    document.querySelector('header').classList.add('header-hidden');
+  } else {
+    // Scrolling UP — show header
+    document.querySelector('header').classList.remove('header-hidden');
   }
-}
-</style>
+
+  lastScrollY = currentScrollY;
+});
+</script>
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="snow-canvas"></canvas>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <header>
+    <div>
+      <div class="brand-name">MADHUMITHA</div>
+      <div class="brand-sub">Full Stack · Machine Learning</div>
+    </div>
+    <nav>
+      <a href="index.html">Home </a>
+      <a href="Skill.html">Skills</a>
+      <a href="project.html">Projects</a>
+      <a href="experience.html" class="active">Experiments</a>
+      <a href="cert.html">Certificates</a>
+    </nav>
+  </header>
+
+  <div class="timeline-wrap">
+    <div class="page-heading">
+      <h1>My <span>Experience</span></h1>
+      <div class="divider"></div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-item left">
+        <div class="card">
+          <img src="../logoo/kalv.png" alt="KALV Consultants">
+          <h3>Internship – KALV Consultants and Facilitators</h3>
+          <h4>Software &amp; IT Intern · Remote · 8 month</h4>
+          <p>I am currently working as a remote intern at KALV Consultants, contributing as both a Full-Stack Developer and a Machine Learning Engineer. I collaborated with colleagues to design, develop, and successfully deploy a full-featured web application. Currently focused on developing AI and machine learning solutions, applying real-world data to build and deploy models.</p>
+          <a href="https://github.com/kalvUK/web_01" target="_blank"><button class="btn-3d">View More</button></a>
+        </div>
+      </div>
+
+      <div class="timeline-item right">
+        <div class="card">
+          <img src="../logoo/techno.png" alt="TechnoHacks">
+          <h3>Machine Learning Internship at TechnoHacks Solutions Pvt. Ltd.</h3>
+          <h4>June 8, 2025 – July 7, 2025</h4>
+          <p>I successfully completed a Machine Learning internship at TechnoHacks Solutions Pvt. Ltd. I gained hands-on experience implementing machine learning algorithms, analyzing datasets, and solving real-world problems — including data preprocessing, model building, and performance evaluation. My contributions were recognized for consistency, dedication, and a strong work ethic.</p>
+          <button class="btn-3d">View More</button>
+        </div>
+      </div>
+
+      <div class="timeline-item left">
+        <div class="card">
+          <img src="../logoo/codesoft.png" alt="CodSoft">
+          <h3>Machine Learning  Internship at CodSoft</h3>
+          <h4>March 5, 2024 – April 5, 2024</h4>
+          <p>I successfully completed a 4-week virtual internship in Machine Learning at CodSoft. I gained hands-on experience implementing machine learning algorithms, working on real-world projects, and applying data-driven solutions. My skills and contributions were recognized for excellence, showcasing my dedication and technical expertise.</p>
+          <a href="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_movie-activity-7186271068859305984-1u4u?utm_source=share&utm_medium=member_desktop" target="_blank"><button class="btn-3d">View More</button></a>
+        </div>
+      </div>
+
+      <div class="timeline-item right">
+        <div class="card">
+          <img src="../logoo/appxcess.png" alt="AppXcess">
+          <h3>Full Stack Developer Internship at AppXcess (Ongoing)</h3>
+          <h4>October 2025 · jan 2026· Coimbatore</h4>
+          <p>In October 2025, I received an offer to join AppXcess Technologies, Coimbatore, as a Full Stack Engineer Intern for a six-month, on-site program. This role provides real-world exposure to full-stack application development under the guidance of experienced engineers. I am contributing to live product initiatives, participating in end-to-end development cycles, and applying industry-standard practices across frontend, backend, and database workflows.</p>
+          <a href ="https://www.linkedin.com/posts/madhu-mitha-8bb72b2a1_appxcess-internship-learningjourney-activity-7419234915248156672-XvmO?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEjmlU8BZDGZZRiTF0ljLH3t1c_VC4ODcK0" target="_blank">
+          <button class="btn-3d">View More</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-name">MADHUMITHA</div>
+      <div class="footer-tagline">AI · Machine Learning · Full Stack</div>
+      <div class="footer-links">
+        <a href="Skill.html">Skills</a>
+        <a href="project.html">Projects</a>
+        <a href="experience.html">Experiments</a>
+        <a href="cert.html">Certificates</a>
+        <a href="../aboutme.html">About</a>
+      </div>
+      <div class="footer-bar"></div>
+      <div class="footer-copy">© 2025 <span>Madhumitha</span> · Built with passion &amp; code</div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script>
+  // ── GLOBAL 3D BACKGROUND ──────────────────────────────────────────
+  (function() {
+    const bgCanvas   = document.getElementById('bg-canvas');
+    const bgScene    = new THREE.Scene();
+    const bgCamera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+    bgRenderer.setSize(window.innerWidth, window.innerHeight);
+    bgRenderer.setPixelRatio(window.devicePixelRatio);
+    bgCamera.position.z = 6;
+
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(3.5, 0.6, 18, 80),
+      new THREE.MeshBasicMaterial({ color: 0x330000, wireframe: true, transparent: true, opacity: 0.18 })
+    );
+    torus.position.set(5, -1, -4);
+    bgScene.add(torus);
+
+    const ico = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.8, 1),
+      new THREE.MeshBasicMaterial({ color: 0x550000, wireframe: true, transparent: true, opacity: 0.15 })
+    );
+    ico.position.set(-5, 2, -3);
+    bgScene.add(ico);
+
+    const pCount = 350;
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random() - 0.5) * 24;
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    bgScene.add(new THREE.Points(pGeo,
+      new THREE.PointsMaterial({ size: 0.04, color: 0xcc2222, transparent: true, opacity: 0.3 })
+    ));
+
+    for (let i = 0; i < 12; i++) {
+      const pts = [
+        new THREE.Vector3((Math.random()-0.5)*20,(Math.random()-0.5)*14,(Math.random()-0.5)*8),
+        new THREE.Vector3((Math.random()-0.5)*20,(Math.random()-0.5)*14,(Math.random()-0.5)*8)
+      ];
+      bgScene.add(new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0x440000, transparent: true, opacity: 0.1 })
+      ));
+    }
+
+    let mouseNX = 0, mouseNY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseNX = (e.clientX / window.innerWidth  - 0.5) * 0.4;
+      mouseNY = (e.clientY / window.innerHeight - 0.5) * 0.3;
+    });
+
+    (function bgAnimate() {
+      requestAnimationFrame(bgAnimate);
+      torus.rotation.x += 0.003; torus.rotation.y += 0.004;
+      ico.rotation.x   += 0.004; ico.rotation.z   += 0.003;
+      bgCamera.position.x += (mouseNX - bgCamera.position.x) * 0.03;
+      bgCamera.position.y += (-mouseNY - bgCamera.position.y) * 0.03;
+      bgCamera.lookAt(bgScene.position);
+      bgRenderer.render(bgScene, bgCamera);
+    })();
+
+    window.addEventListener('resize', () => {
+      bgRenderer.setSize(window.innerWidth, window.innerHeight);
+      bgCamera.aspect = window.innerWidth / window.innerHeight;
+      bgCamera.updateProjectionMatrix();
+    });
+  })();
+
+  // ── SNOW ─────────────────────────────────────────────────────────────
+  (function() {
+    const sc = document.getElementById('snow-canvas');
+    const ctx = sc.getContext('2d');
+    sc.width = window.innerWidth; sc.height = window.innerHeight;
+    const flakes = Array.from({ length: 130 }, () => ({
+      x: Math.random() * sc.width, y: Math.random() * sc.height,
+      r: 0.8 + Math.random() * 2.2, speed: 0.4 + Math.random() * 1.2,
+      drift: (Math.random() - 0.5) * 0.4, opacity: 0.15 + Math.random() * 0.45
+    }));
+    (function drawSnow() {
+      ctx.clearRect(0, 0, sc.width, sc.height);
+      flakes.forEach(f => {
+        ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${f.opacity})`; ctx.fill();
+        f.y += f.speed; f.x += f.drift;
+        if (f.y > sc.height+4) { f.y=-4; f.x=Math.random()*sc.width; }
+        if (f.x > sc.width+4)  f.x=-4;
+        if (f.x < -4)          f.x=sc.width+4;
+      });
+      requestAnimationFrame(drawSnow);
+    })();
+    window.addEventListener('resize', () => { sc.width=window.innerWidth; sc.height=window.innerHeight; });
+  })();
+
+  // ── CURSOR ──────────────────────────────────────────────────────────
+  (function() {
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx=-100, my=-100, rx=-100, ry=-100;
+    window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function loop() {
+      rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+      dot.style.left=mx+'px'; dot.style.top=my+'px';
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+    window.addEventListener('mousedown', () => dot.classList.add('clicked'));
+    window.addEventListener('mouseup',   () => dot.classList.remove('clicked'));
+    window.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+    window.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='1'; });
+  })();
+
+  // ── CARD SCROLL ANIMATION ───────────────────────────────────────────
+  const cards = document.querySelectorAll('.timeline-item .card');
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationDelay = '0s';
+        e.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(c => {
+    c.style.animationPlayState = 'paused';
+    cardObs.observe(c);
+  });
+  </script>
 </body>
 </html>

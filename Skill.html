@@ -20,6 +20,47 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #ffffff;
     }
+    header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+header.header-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+    /* Add this to your header/nav */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  nav {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    gap: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .logo, .site-title {
+    width: 100%;
+    text-align: center;
+  }
+}
+  
 
     /* Background Effect */
     .nebula-bg {
@@ -28,7 +69,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+      background: black;
       z-index: -1;
       overflow: hidden;
     }
@@ -48,7 +89,7 @@
       left: 50%;
       width: 50%;
       height: 50%;
-      background: linear-gradient(45deg, #ff6f91, #d4a5ff);
+      background: linear-gradient(125deg, #ed063c, #6c06cb);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       opacity: 0.6;
@@ -133,7 +174,8 @@
     .card {
       width: 550px;
       height: 600px;
-      background-color: #000;
+            background-color: (#cc2222, #1a0505, #cc2222, #000, #cc2222);
+
       color: rgb(19, 142, 140);
       border-radius: 10px;
       box-shadow: 8px 8px 8px 8px rgba(255, 255, 255, 0.3);
@@ -146,8 +188,9 @@
     }
 
     .card:hover {
-      background: white;
-      color: rgb(25, 25, 25);
+      background: (#cc2222, #1a0505, #cc2222, #000, #cc2222);
+      
+      color: #000;
       transform: translateY(0);
     }
 
@@ -165,7 +208,7 @@
       text-align: left;
       line-height: 1.1;
       flex-grow: 1;
-      color: white;
+      color: rgb(24, 23, 23);
     
       align-items: left;
       justify-content: left;
@@ -194,7 +237,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgb(23, 124, 144);
+      background-color: white;
       opacity: 0;
       transform: translateX(-50px);
       transition: all 0.7s ease;
@@ -215,7 +258,7 @@
 
     .magic-card:hover {
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-      background-color: whitesmoke;
+      background-color: linear-gradient(35deg, #ee1515, #ffffff);
     }
 
     /* Flow Cards (p4) */
@@ -224,7 +267,7 @@
       gap: 70px;
       width: 220%;
       margin-top: 440px;
-      background-color: rgb(14, 110, 134);
+      background-color: transparent;
       animation: horizontal-flow 10s linear infinite;
       padding: 20px 0;
     }
@@ -390,6 +433,23 @@
   </style>
 </head>
 <body>
+<script>
+    let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    // Scrolling DOWN — hide header
+    document.querySelector('header').classList.add('header-hidden');
+  } else {
+    // Scrolling UP — show header
+    document.querySelector('header').classList.remove('header-hidden');
+  }
+
+  lastScrollY = currentScrollY;
+});
+</script>
   <!-- Background -->
   <div class="nebula-bg">
     <div class="sparkle"></div>

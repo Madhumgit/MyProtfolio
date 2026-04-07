@@ -13,7 +13,7 @@ html, body, #app { height: 100% }
 body {
   margin: 0; /* remove default white margins */
   min-height: 100vh; /* make sure it fills the entire viewport height */
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
+  background-color: transparent;
   background-attachment: fixed; /* makes the gradient stay in place when scrolling */
   background-repeat: no-repeat;
   background-size: cover;
@@ -28,7 +28,7 @@ header {
   width: 100%;
   overflow: hidden;
   text-decoration: none;
-  background-color: #146363; /* just to see it */
+  background-color:black; /* just to see it */
 }
 
 .he {
@@ -44,12 +44,13 @@ header {
 header {
   height: 80px;
   position: fixed; top: 0; left: 0; right: 0;
-  background: linear-gradient(90deg,rgb(193, 190, 190),white,silver);
-  color: #000000;
+  background: transparent;
+  color: white;
   display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
-  z-index: 1000; box-shadow: 0 6px 18px rgba(55, 169, 179, 0.55);
+  z-index: 1000; box-shadow: 0 6px 18px rgba(237, 30, 2, 0.55);
   border-bottom: 1px solid rgba(147, 14, 14, 0.03);
 }
+
 
 .brand { display: flex; gap: 12px; align-items: center }
 
@@ -76,9 +77,11 @@ main { padding-top: calc(var(--header-height) + 32px) }
 
 .card {
   max-width: 980px; padding: 48px; border-radius: 18px;
-  background: linear-gradient(180deg, rgba(221, 31, 31, 0.03), rgba(14, 247, 22, 0.01));
+  background: white;
+  color: #000000;
   backdrop-filter: blur(6px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 10px rgb(243, 34, 34);
+
 }
 
 h1 { font-size: 48px; line-height: 1.02; margin-bottom: 12px; color: var(--text) }

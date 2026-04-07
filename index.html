@@ -4,275 +4,666 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About Me - Madhumitha</title>
-  <link rel="stylesheet" href="style.css">
-  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+header.header-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+    /* Add this to your header/nav */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  nav {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    gap: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .logo, .site-title {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+    /* ── GLOBAL 3D BACKGROUND CANVAS ── */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── SNOW CANVAS ── */
+    #snow-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* all page content sits above bg */
+    header, section, .scroll-cta, .social-section, footer {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: #cc2222;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: transform 0.1s;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 30px; height: 30px;
+      border: 1.5px solid rgba(204,34,34,0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9998;
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+    }
+    #cursor-ring.hovered {
+      width: 46px; height: 46px;
+      border-color: rgba(224,80,80,0.85);
+    }
+    #cursor-dot.clicked { transform: translate(-50%,-50%) scale(0.5); }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.75);
+      border-bottom: 1px solid rgba(200,30,30,0.2);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(16px);
+    }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: 2px; color: #fff; }
+    .brand-sub  { font-size: 11px; color: #cc2222; margin-top: 3px; letter-spacing: 1px; }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: #aaa; text-decoration: none;
+      font-size: 13px; letter-spacing: 1px;
+      text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover { color: #e03030; }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 120px 48px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 40px;
+      min-height: 88vh;
+    }
+    .hero-text h1 {
+      font-size: 52px; font-weight: 800;
+      line-height: 1.15; color: #fff; margin-bottom: 14px;
+    }
+    .hero-text h1 span { color: #cc2222; }
+    .hero-text .sub {
+      font-size: 17px; color: #999;
+      margin-bottom: 36px; line-height: 1.8; max-width: 480px;
+    }
+    .btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 13px 30px; background: #cc2222; color: #fff;
+      text-decoration: none; font-size: 13px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 4px; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #e03030; }
+    .btn-outline {
+      padding: 13px 30px; border: 1.5px solid #555; color: #ddd;
+      text-decoration: none; font-size: 13px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 4px; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: #cc2222; color: #fff; }
+
+    /* ── PROFILE RING ── */
+    .profile-ring {
+      position: relative; width: 320px; height: 320px; flex-shrink: 0;
+      margin-top: 40px;
+    }
+    .profile-ring::before {
+      content: ''; position: absolute; inset: -8px; border-radius: 50%;
+      background: conic-gradient(#cc2222, #1a0505, #cc2222, #000, #cc2222);
+      animation: spin 5s linear infinite;
+    }
+    .profile-ring::after {
+      content: ''; position: absolute; inset: -3px;
+      border-radius: 50%; background: #0a0a0a;
+    }
+    .profile-circle {
+      position: absolute; inset: 0; border-radius: 50%;
+      overflow: hidden; z-index: 2; background: #1a0a0a;
+    }
+    .profile-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  display: block;
+}
+    @keyframes spin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+    /* ── SCROLL CTA ── */
+    .scroll-cta {
+      text-align: center; padding: 10px 0 40px;
+      color: #555; font-size: 13px; letter-spacing: 1px; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .scroll-cta:hover { color: #cc2222; }
+    .mouse-icon {
+      width: 22px; height: 34px; border: 2px solid #444;
+      border-radius: 12px; margin: 0 auto 8px; position: relative;
+    }
+    .mouse-icon::after {
+      content: ''; position: absolute; top: 5px; left: 50%;
+      transform: translateX(-50%); width: 3px; height: 7px;
+      background: #cc2222; border-radius: 3px;
+      animation: scroll-anim 1.5s infinite;
+    }
+    @keyframes scroll-anim { 0%{opacity:1;top:5px;} 100%{opacity:0;top:16px;} }
+
+    /* ── ABOUT — 3D blends into page (no box, no border) ── */
+    .about-section {
+      padding: 100px 48px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .about-text h2 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .about-text h2 span { color: #cc2222; }
+    .about-divider { width: 50px; height: 3px; background: #cc2222; margin-bottom: 20px; }
+    .about-text p { font-size: 16px; color: #aaa; line-height: 1.8; max-width: 500px; }
+
+    /* transparent wrap — canvas blends into page bg */
+    .about-canvas-wrap {
+      flex-shrink: 0;
+      width: 380px; height: 380px;
+      position: relative;
+    }
+    #three-canvas {
+      position: absolute; inset: 0;
+      width: 100% !important; height: 100% !important;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 80px 48px; max-width: 620px; margin: 0 auto; }
+    .contact-section h2 { font-size: 32px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 8px; }
+    .contact-section h2 span { color: #cc2222; }
+    .contact-divider { width: 50px; height: 3px; background: #cc2222; margin: 0 auto 32px; }
+    .contact-form {
+      background: rgba(15,3,3,0.75);
+      border: 1px solid rgba(200,30,30,0.18);
+      border-radius: 12px; padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+    .contact-form label {
+      display: block; font-size: 11px; color: #cc2222;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%; background: rgba(10,2,2,0.8);
+      border: 1px solid #2a0a0a; color: #f0f0f0;
+      padding: 12px 16px; font-size: 15px; border-radius: 6px;
+      margin-bottom: 20px; outline: none; font-family: inherit; transition: border 0.2s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: #cc2222; }
+    .contact-form textarea { height: 120px; resize: vertical; }
+    .contact-form button {
+      width: 100%; padding: 14px; background: #cc2222; color: #fff;
+      border: none; font-size: 14px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      border-radius: 6px; cursor: pointer; transition: background 0.2s;
+    }
+    .contact-form button:hover { background: #e03030; }
+
+    /* ── SOCIAL ── */
+    .social-section { display: flex; justify-content: center; gap: 20px; padding: 32px 48px 48px; }
+    .social-link {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid #2a0a0a; background: rgba(17,3,3,0.8);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: all 0.2s;
+      backdrop-filter: blur(6px);
+    }
+    .social-link:hover { border-color: #cc2222; background: #1a0505; }
+    .social-link img { width: 18px; height: 18px; filter: invert(1) brightness(0.6); }
+    .social-link:hover img { filter: invert(30%) sepia(100%) saturate(400%) hue-rotate(330deg); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(135deg, #0f0000 0%, #1a0505 40%, #220000 70%, #0a0a0a 100%);
+      border-top: 1px solid rgba(204,34,34,0.3);
+      padding: 48px 48px 28px;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .footer-name { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #fff; margin-bottom: 6px; }
+    .footer-tagline { font-size: 13px; color: #cc2222; letter-spacing: 1px; margin-bottom: 24px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+    .footer-links a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #cc2222; }
+    .footer-bar { width: 60px; height: 1px; background: rgba(204,34,34,0.35); margin: 0 auto 16px; }
+    .footer-copy { font-size: 12px; color: #333; }
+    .footer-copy span { color: #cc2222; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { gap: 16px; }
+      .hero { flex-direction: column; padding: 80px 20px 40px; text-align: center; min-height: auto; }
+      .hero-text h1 { font-size: 34px; }
+      .btns { justify-content: center; }
+      .profile-ring { width: 240px; height: 240px; margin-top: 20px; }
+      .about-section { flex-direction: column; padding: 60px 20px; }
+      .about-canvas-wrap { width: 260px; height: 260px; margin: 0 auto; }
+      .contact-section { padding: 48px 20px; }
+      .social-section { padding: 20px 20px 40px; }
+      footer { padding: 30px 20px 20px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Header -->
-    <header>
-      <div class="brand">
-        <div>
-          <div style="font-weight:800;letter-spacing:0.4px">MADHUMITHA</div>
-          <div style="font-size:12px;opacity:0.7;margin-top:2px">Full stack and Machine learning developer</div>
-        </div>
-      </div>
+<script>
+    let lastScrollY = window.scrollY;
 
-      <nav class="he">
-       
-        <a href="Skill.html">Skill</a>
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    // Scrolling DOWN — hide header
+    document.querySelector('header').classList.add('header-hidden');
+  } else {
+    // Scrolling UP — show header
+    document.querySelector('header').classList.remove('header-hidden');
+  }
+
+  lastScrollY = currentScrollY;
+});
+</script>
+  <!-- Global 3D background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Snow -->
+  <canvas id="snow-canvas"></canvas>
+
+  <!-- Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="brand-name">MADHUMITHA</div>
+      <div class="brand-sub">Full Stack · Machine Learning</div>
+    </div>
+    <nav>
+      <a href="Skill.html">Skills</a>
+      <a href="project.html">Projects</a>
+      <a href="experience.html">Experiments</a>
+      <a href="cert.html">Certificates</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>AI &amp; ML Engineer <br><span></span></h1>
+      <p class="sub">
+        A dedicated AI &amp; Machine Learning Engineer 
+        with strong experience in building intelligent systems for real-world problem solving.
+        Focused on model optimization, performance tuning, and scalable deployment.
+      </p>
+      <div class="btns">
+        <a href="../resume.html" class="btn-primary">Resume</a>
+        <a href="../aboutme.html" class="btn-outline">About Me</a>
+      </div>
+    </div>
+    <div class="profile-ring">
+      <div class="profile-circle">
+        <img src="../logoo/white3.png" alt="Madhumitha">
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll down -->
+  <div class="scroll-cta" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    <div class="mouse-icon"></div>
+    ↓ Click Me
+  </div>
+
+  <!-- About -->
+  <section id="about" class="about-section">
+    <div class="about-text">
+      <h2>Full Stack <span>Dev</span></h2>
+      <div class="about-divider"></div>
+      <p>
+        I'm a passionate  Full Stack Developer
+        ,Developed end-to-end web applications using modern frontend and backend technologies.
+        Built scalable APIs and managed database integration efficiently.
+        Applied best practices in security, scalability, and maintainable code architecture.
+      </p>
+    </div>
+    <div class="about-canvas-wrap">
+      <canvas id="three-canvas"></canvas>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section">
+    <h2>Contact <span>Me</span></h2>
+    <div class="contact-divider"></div>
+    <div class="contact-form">
+      <form action="https://formspree.io/f/mvgwjnjo" method="POST">
+        <label>Your Name</label>
+        <input type="text" name="name" placeholder="Enter your name" required>
+        <label>Your Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <label>Your Message</label>
+        <textarea name="message" placeholder="Type your message..." required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Social -->
+  <div class="social-section">
+    <a href="https://github.com/Madhumgit" target="_blank" class="social-link" title="GitHub">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" alt="GitHub">
+    </a>
+    <a href="https://www.linkedin.com/in/madhu-mitha-8bb72b2a1/" target="_blank" class="social-link" title="LinkedIn">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/linkedin.svg" alt="LinkedIn">
+    </a>
+    <a href="https://leetcode.com/u/madhuaiml01/" target="_blank" class="social-link" title="LeetCode">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/leetcode.svg" alt="LeetCode">
+    </a>
+    <a href="mailto:mithamadhu8785@gmail.com" class="social-link" title="Email">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/maildotru.svg" alt="Email">
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-name">MADHUMITHA</div>
+      <div class="footer-tagline">AI · Machine Learning · Full Stack</div>
+      <div class="footer-links">
+        <a href="Skill.html">Skills</a>
         <a href="project.html">Projects</a>
         <a href="experience.html">Experiments</a>
         <a href="cert.html">Certificates</a>
-        
-      </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <main>
-      <div class="hero">
-        
-  <!-- Left text block -->
-  <div class="text">
-    <div class="line" ><span>A dedicated AI & Machine Learning Engineer and Full stack Developer 
-     with strong experience in building intelligent systems </span></div>
-    
-
-    <!-- Buttons under text -->
-    <div class="buttons">
-      <a href="../resume.html"><div class="btn btn-one"><span>RESUME</span></div></a>
-      <a href="../aboutme.html"><div class="btn btn-two"><span>ABOUT ME</span></div></a>
+        <a href="../aboutme.html">About</a>
+      </div>
+      <div class="footer-bar"></div>
+      <div class="footer-copy">© 2026 <span>Madhumitha</span> · Built with passion &amp; code</div>
+      <div id="footer-inject"></div>
     </div>
-  </div>
+  </footer>
 
-  <!-- Right circle image -->
-  <div class="image">
-    <img src="../logoo/gemini.png" alt="Profile" class="avatar">
-  </div>
-</div>
-<style>
-/* CSS */
-.image {
-  width: 300px;           /* control the displayed size */
-  height: 400px;          /* keep equal to width for a perfect circle */
-  border-radius: 60%;     /* circle shape */
-  overflow: hidden;       /* hide overflow so img is cropped */
-  display: inline-block;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15); /* subtle shadow (optional) */
-  border: 4px solid #777575; /* optional border - change color as needed */
-  background: #eee;       /* fallback background while image loads */
-}
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
-/* Make the image cover the circle and stay centered */
-.avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;      /* crop while preserving aspect ratio */
-  object-position: center center; /* keep face centered */
-  display: block;
-}
+  <script>
+  // ── 1. GLOBAL BACKGROUND 3D SCENE ──────────────────────────────────────────
+  (function() {
+    const bgCanvas   = document.getElementById('bg-canvas');
+    const bgScene    = new THREE.Scene();
+    const bgCamera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+    bgRenderer.setSize(window.innerWidth, window.innerHeight);
+    bgRenderer.setPixelRatio(window.devicePixelRatio);
+    bgCamera.position.z = 6;
 
-/* Responsive size example */
-@media (max-width: 480px) {
-  .avatar-wrap { width: 140px; height: 140px; }
-}
+    // Wireframe torus — faint red
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(3.5, 0.6, 18, 80),
+      new THREE.MeshBasicMaterial({ color: 0x330000, wireframe: true, transparent: true, opacity: 0.18 })
+    );
+    torus.position.set(5, -1, -4);
+    bgScene.add(torus);
 
-</style>
-     
-    <!-- custom cursor element -->
-    <div id="cursor" aria-hidden="true"></div>
-  
- 
-   
-    <div class="scroll-down" onclick="scrollToNext()">
-      <div class="mouse"></div>
-      <div class="arrow">↓</div>
-      <div>Click Me</div>
-    </div>
-  </section>
+    // Icosahedron — faint red
+    const ico = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.8, 1),
+      new THREE.MeshBasicMaterial({ color: 0x550000, wireframe: true, transparent: true, opacity: 0.15 })
+    );
+    ico.position.set(-5, 2, -3);
+    bgScene.add(ico);
 
+    // Floating point cloud
+    const pCount = 350;
+    const pPos   = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random() - 0.5) * 24;
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    bgScene.add(new THREE.Points(pGeo,
+      new THREE.PointsMaterial({ size: 0.04, color: 0xcc2222, transparent: true, opacity: 0.3 })
+    ));
 
-
-<!--part 2 in home page-->
-
-  <section id="about">
-    <div class="container">
-        <div class="left-section">
-            <h1 class="colorful-title">About Me</h1>
-            <p style="font-size: 23px; font-weight:bolder; overflow: hidden;width:600px; margin-left: 100px;" class="about-content">
-
-  I’m a passionate AI & Machine Learning Engineer and Fullstack Developer with hands-on experience in building intelligent systems and modern web applications.I like to develop a ML models for innovative solutions or developing smooth, interactive websites with modern design and animations.
-           </p>
-        </div>
-        <div class="right-section">
-            <canvas id="three-canvas"></canvas>
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 2 / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
-        renderer.setSize(window.innerWidth / 2, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-
-        const geometry = new THREE.SphereGeometry(2, 32, 32);
-        const material = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0x4ecdc4,
-            transparent: true,
-            opacity: 0.8,
-            sizeAttenuation: true
-        });
-        const sphere = new THREE.Points(geometry, material);
-        scene.add(sphere);
-
-        camera.position.z = 5;
-
-        const particles = new THREE.Group();
-        const particleGeometry = new THREE.SphereGeometry(0.02, 16, 16);
-        const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xff6b6b });
-        for (let i = 0; i < 100; i++) {
-            const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-            particle.position.set(
-                (Math.random() - 0.5) * 8,
-                (Math.random() - 0.5) * 8,
-                (Math.random() - 0.5) * 8
-            );
-            particles.add(particle);
-        }
-        scene.add(particles);
-
-        function animate() {
-            requestAnimationFrame(animate);
-            sphere.rotation.x += 0.002;
-            sphere.rotation.y += 0.003;
-            particles.rotation.y += 0.001;
-            particles.children.forEach(p => {
-                p.position.y += Math.sin(Date.now() * 0.001 + p.position.x) * 0.01;
-            });
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth / 2, window.innerHeight);
-            camera.aspect = window.innerWidth / 2 / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
-    </script>
-  </section>
-
- <script>
-    function scrollToNext() {
-      document.getElementById("about").scrollIntoView({ behavior: 'smooth' });
+    // Subtle connection lines
+    for (let i = 0; i < 12; i++) {
+      const pts = [
+        new THREE.Vector3((Math.random()-0.5)*20, (Math.random()-0.5)*14, (Math.random()-0.5)*8),
+        new THREE.Vector3((Math.random()-0.5)*20, (Math.random()-0.5)*14, (Math.random()-0.5)*8)
+      ];
+      bgScene.add(new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0x440000, transparent: true, opacity: 0.1 })
+      ));
     }
-  </script>
 
-
-
-
-  <!-- JavaScript -->
-<script>
-    // Smooth-follow cursor
-    const cursor = document.getElementById('cursor');
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let posX = mouseX, posY = mouseY;
-    const speed = 0.18; // lower = slower follow
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.classList.remove('cursor--hide');
+    let mouseNX = 0, mouseNY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseNX = (e.clientX / window.innerWidth  - 0.5) * 0.4;
+      mouseNY = (e.clientY / window.innerHeight - 0.5) * 0.3;
     });
 
-    window.addEventListener('mouseleave', () => cursor.classList.add('cursor--hide'));
-    window.addEventListener('mouseenter', () => cursor.classList.remove('cursor--hide'));
+    (function bgAnimate() {
+      requestAnimationFrame(bgAnimate);
+      torus.rotation.x += 0.003;
+      torus.rotation.y += 0.004;
+      ico.rotation.x   += 0.004;
+      ico.rotation.z   += 0.003;
+      bgCamera.position.x += (mouseNX - bgCamera.position.x) * 0.03;
+      bgCamera.position.y += (-mouseNY - bgCamera.position.y) * 0.03;
+      bgCamera.lookAt(bgScene.position);
+      bgRenderer.render(bgScene, bgCamera);
+    })();
 
-    function raf() {
-      posX += (mouseX - posX) * speed;
-      posY += (mouseY - posY) * speed;
-      cursor.style.left = posX + 'px';
-      cursor.style.top = posY + 'px';
-      requestAnimationFrame(raf);
+    window.addEventListener('resize', () => {
+      bgRenderer.setSize(window.innerWidth, window.innerHeight);
+      bgCamera.aspect = window.innerWidth / window.innerHeight;
+      bgCamera.updateProjectionMatrix();
+    });
+  })();
+
+
+  // ── 2. ABOUT SECTION — BLENDED 3D SPHERE ───────────────────────────────────
+  (function() {
+    const canvas   = document.getElementById('three-canvas');
+    const wrap     = canvas.parentElement;
+    const scene    = new THREE.Scene();
+    const camera   = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0); // fully transparent
+    camera.position.z = 5;
+
+    // Point sphere
+    const sphere = new THREE.Points(
+      new THREE.SphereGeometry(2, 40, 40),
+      new THREE.PointsMaterial({ size: 0.045, color: 0xcc2222, transparent: true, opacity: 0.9 })
+    );
+    scene.add(sphere);
+
+    // Inner wireframe
+    scene.add(new THREE.Mesh(
+      new THREE.SphereGeometry(1.2, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0x880000, wireframe: true, transparent: true, opacity: 0.25 })
+    ));
+
+    // Orbit ring
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(2.4, 0.012, 4, 100),
+      new THREE.MeshBasicMaterial({ color: 0xcc2222, transparent: true, opacity: 0.4 })
+    );
+    ring.rotation.x = Math.PI / 2.2;
+    scene.add(ring);
+
+    // Floating particles
+    const fp   = new THREE.Group();
+    const fMat = new THREE.MeshBasicMaterial({ color: 0xff4444 });
+    for (let i = 0; i < 60; i++) {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.025, 6, 6), fMat);
+      m.position.set((Math.random()-0.5)*7, (Math.random()-0.5)*7, (Math.random()-0.5)*7);
+      fp.add(m);
     }
-    requestAnimationFrame(raf);
+    scene.add(fp);
 
-    // enlarge cursor on hover
-    const interactive = document.querySelectorAll('a, button, .clickable');
-    interactive.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+    (function animate() {
+      requestAnimationFrame(animate);
+      sphere.rotation.x += 0.003;
+      sphere.rotation.y += 0.004;
+      ring.rotation.z   += 0.006;
+      fp.rotation.y     += 0.002;
+      fp.children.forEach(p => {
+        p.position.y += Math.sin(Date.now() * 0.001 + p.position.x) * 0.006;
+      });
+      renderer.render(scene, camera);
+    })();
+  })();
+
+
+  // ── 3. SNOW ─────────────────────────────────────────────────────────────────
+  (function() {
+    const sc  = document.getElementById('snow-canvas');
+    const ctx = sc.getContext('2d');
+    sc.width  = window.innerWidth;
+    sc.height = window.innerHeight;
+
+    const flakes = Array.from({ length: 130 }, () => ({
+      x: Math.random() * sc.width,
+      y: Math.random() * sc.height,
+      r: 0.8 + Math.random() * 2.2,
+      speed: 0.4 + Math.random() * 1.2,
+      drift: (Math.random() - 0.5) * 0.4,
+      opacity: 0.15 + Math.random() * 0.45
+    }));
+
+    (function drawSnow() {
+      ctx.clearRect(0, 0, sc.width, sc.height);
+      flakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
+        ctx.fill();
+        f.y += f.speed;
+        f.x += f.drift;
+        if (f.y > sc.height + 4) { f.y = -4; f.x = Math.random() * sc.width; }
+        if (f.x > sc.width  + 4) f.x = -4;
+        if (f.x < -4)            f.x = sc.width + 4;
+      });
+      requestAnimationFrame(drawSnow);
+    })();
+
+    window.addEventListener('resize', () => {
+      sc.width  = window.innerWidth;
+      sc.height = window.innerHeight;
+    });
+  })();
+
+
+  // ── 4. CURSOR ───────────────────────────────────────────────────────────────
+  (function() {
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    (function loop() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      dot.style.left  = mx + 'px';
+      dot.style.top   = my + 'px';
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
     });
 
-    // click pop effect
-    window.addEventListener('mousedown', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(0.85)';
+    window.addEventListener('mousedown', () => dot.classList.add('clicked'));
+    window.addEventListener('mouseup',   () => dot.classList.remove('clicked'));
+    window.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0'; ring.style.opacity = '0';
     });
-    window.addEventListener('mouseup', () => {
-      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    window.addEventListener('mouseenter', () => {
+      dot.style.opacity = '1'; ring.style.opacity = '1';
     });
-
-    // keyboard focus effect
-    interactive.forEach(el => {
-      el.addEventListener('focus', () => cursor.classList.add('cursor--hover'));
-      el.addEventListener('blur', () => cursor.classList.remove('cursor--hover'));
-    });
-  </script>
+  })();
 
 
-<h1 class="colorful-title">Contact Me</h1>
-
-<div class="contact-form">
-  <form
-  action="https://formspree.io/f/mvgwjnjo"
-  method="POST"
->
-    <label>
-      Your Name:
-      <input type="text" name="name" placeholder="Enter your name" required>
-    </label>
-
-    <label>
-      Your Email:
-      <input type="email" name="email" placeholder="Enter your email" required>
-    </label>
-
-    <label>
-      Your Message:
-      <textarea name="message" placeholder="Type your message..." required></textarea>
-    </label>
-
-    <button type="submit">Send</button>
-  </form>
-</div>
-
-
-
-        <div class="social-links">
-            <a href="https://github.com/Madhumgit" target="_blank" title="GitHub">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" alt="GitHub">
-            </a>
-            <a href="https://www.linkedin.com/in/madhu-mitha-8bb72b2a1/" target="_blank" title="LinkedIn">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/linkedin.svg" alt="LinkedIn">
-            </a>
-            <a href="https://leetcode.com/u/madhuaiml01/" target="_blank" title="LeetCode">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/leetcode.svg" alt="LeetCode">
-            </a>
-            <a href="mithamadhu8785@gmail.com" title="Email">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/maildotru.svg" alt="Email">
-            </a>
-        </div>
-        <div id="footer"></div>
-
-        <script>
+  // ── 5. FOOTER INJECT ────────────────────────────────────────────────────────
   fetch("footer.html")
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("footer").innerHTML = data;
-    });
-</script>
+    .then(r => r.text())
+    .then(d => { document.getElementById("footer-inject").innerHTML = d; })
+    .catch(() => {});
+  </script>
 
-    </div>
 </body>
 </html>

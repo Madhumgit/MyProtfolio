@@ -1,567 +1,690 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhumitha K - Resume</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume - Madhumitha K</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-            min-height: 100vh;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+    }
 
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            animation: slideUp 0.8s ease-out;
-        }
+    #bg-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    #snow-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1; pointer-events: none;
+    }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    header, .page-wrapper, footer { position: relative; z-index: 10; }
 
-        .header {
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-            color: white;
-            padding: 50px 40px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    /* ── CURSOR ── */
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: #cc2222; border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9999; transition: transform 0.1s;
+    }
+    #cursor-ring {
+      position: fixed; width: 30px; height: 30px;
+      border: 1.5px solid rgba(204,34,34,0.6); border-radius: 50%;
+      pointer-events: none; transform: translate(-50%,-50%);
+      z-index: 9998; transition: width 0.2s, height 0.2s, border-color 0.2s;
+    }
+    #cursor-ring.hovered { width: 46px; height: 46px; border-color: rgba(224,80,80,0.85); }
+    #cursor-dot.clicked  { transform: translate(-50%,-50%) scale(0.5); }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
+    /* ── SITE HEADER ── */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px;
+      background: rgba(10,10,10,0.75);
+      border-bottom: 1px solid rgba(200,30,30,0.2);
+      position: sticky; top: 0; backdrop-filter: blur(16px);
+    }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: 2px; color: #fff; }
+    .brand-sub  { font-size: 11px; color: #cc2222; margin-top: 3px; letter-spacing: 1px; }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: #aaa; text-decoration: none; font-size: 13px;
+      letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover { color: #e03030; }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+    /* ── PAGE WRAPPER ── */
+    .page-wrapper { padding: 50px 20px 80px; display: flex; justify-content: center; }
 
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
+    /* ── RESUME CARD ── */
+    .resume-card {
+      width: 100%; max-width: 920px;
+      background: rgba(10,2,2,0.85);
+      border: 1px solid rgba(204,34,34,0.2);
+      border-radius: 20px; overflow: hidden;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: slideUp 0.8s ease-out;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            animation: fadeIn 1s ease-out 0.3s both;
-        }
+    /* ── RESUME HEADER ── */
+    .resume-header {
+      background: linear-gradient(135deg, #1a0000 0%, #330505 40%, #1a0000 100%);
+      border-bottom: 2px solid rgba(204,34,34,0.4);
+      padding: 50px 40px 36px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .resume-header::before {
+      content: ''; position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(204,34,34,0.08) 0%, transparent 70%);
+      animation: pulse 5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+    .resume-header-inner { position: relative; z-index: 1; }
+    .resume-header h1 {
+      font-size: 42px; font-weight: 800; letter-spacing: 3px;
+      color: #fff; margin-bottom: 10px;
+      text-shadow: 0 0 30px rgba(204,34,34,0.4);
+    }
+    .resume-header .subtitle {
+      font-size: 16px; color: #cc2222; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 18px; font-weight: 600;
+    }
+    .resume-header .contact-info {
+      font-size: 14px; color: #aaa; line-height: 1.8;
+    }
+    .header-links {
+      margin-top: 14px; display: flex; justify-content: center;
+      gap: 14px; flex-wrap: wrap;
+    }
+    .header-links a {
+      color: #f0f0f0; text-decoration: none;
+      padding: 6px 18px; font-size: 12px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      background: rgba(204,34,34,0.2); border: 1px solid rgba(204,34,34,0.35);
+      border-radius: 20px; transition: all 0.2s;
+    }
+    .header-links a:hover {
+      background: rgba(204,34,34,0.4); border-color: #cc2222; color: #fff;
+    }
 
-        .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-            animation: fadeIn 1s ease-out 0.6s both;
-            margin-bottom: 15px;
-        }
+    /* ── SHARE SECTION ── */
+    .share-section {
+      padding: 28px 40px; text-align: center;
+      background: rgba(15,2,2,0.6);
+      border-bottom: 1px solid rgba(204,34,34,0.15);
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      flex-wrap: wrap;
+    }
+    .share-label {
+      font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .share-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 26px; border: none; border-radius: 30px;
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.25s;
+    }
+    .share-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .btn-native {
+      background: #cc2222; color: #fff;
+      box-shadow: 0 4px 18px rgba(204,34,34,0.4);
+    }
+    .btn-native:hover {
+      background: #e03030; transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(204,34,34,0.55);
+    }
+    .btn-copy {
+      background: rgba(204,34,34,0.15); color: #e07070;
+      border: 1.5px solid rgba(204,34,34,0.35);
+    }
+    .btn-copy:hover {
+      background: rgba(204,34,34,0.28); border-color: #cc2222; color: #fff;
+      transform: translateY(-2px);
+    }
+    .btn-copy.copied {
+      background: rgba(34,204,100,0.15); color: #44ee88;
+      border-color: rgba(34,204,100,0.4);
+    }
+    /* toast */
+    #toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: rgba(15,2,2,0.95); border: 1px solid rgba(204,34,34,0.4);
+      color: #e07070; padding: 12px 28px; border-radius: 30px;
+      font-size: 13px; font-weight: 600; letter-spacing: 1px;
+      opacity: 0; transition: all 0.35s; z-index: 9999; pointer-events: none;
+      backdrop-filter: blur(10px);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .header-contact {
-            font-size: 0.95em;
-            opacity: 0.95;
-            animation: fadeIn 1s ease-out 0.7s both;
-            line-height: 1.6;
-        }
+    /* ── CONTENT ── */
+    .resume-content { padding: 40px; }
 
-        .header-links {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            animation: fadeIn 1s ease-out 0.8s both;
-        }
+    /* sections */
+    .section {
+      margin-bottom: 38px;
+      opacity: 0; animation: slideInLeft 0.6s ease-out forwards;
+    }
+    .section:nth-child(1){animation-delay:.1s}
+    .section:nth-child(2){animation-delay:.2s}
+    .section:nth-child(3){animation-delay:.3s}
+    .section:nth-child(4){animation-delay:.4s}
+    .section:nth-child(5){animation-delay:.5s}
+    .section:nth-child(6){animation-delay:.6s}
+    .section:nth-child(7){animation-delay:.7s}
+    .section:nth-child(8){animation-delay:.8s}
+    @keyframes slideInLeft {
+      from { opacity:0; transform:translateX(-24px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
 
-        .header-links a {
-            color: white;
-            text-decoration: none;
-            padding: 5px 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
+    .section h2 {
+      font-size: 20px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: #cc2222;
+      margin-bottom: 18px; padding-bottom: 10px;
+      border-bottom: 2px solid rgba(204,34,34,0.25);
+      display: inline-block;
+    }
 
-        .header-links a:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
+    /* summary */
+    .summary-text { font-size: 15px; color: #aaa; line-height: 1.85; }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* skills grid */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: 14px; margin-top: 12px;
+    }
+    .skill-category {
+      padding: 16px 18px;
+      background: rgba(20,3,3,0.7); border: 1px solid rgba(204,34,34,0.18);
+      border-left: 3px solid #cc2222; border-radius: 8px;
+      transition: all 0.25s;
+    }
+    .skill-category:hover {
+      transform: translateX(5px);
+      border-color: #cc2222; border-left-color: #e03030;
+      box-shadow: 0 4px 16px rgba(204,34,34,0.2);
+    }
+    .skill-category strong { color: #cc2222; display: block; margin-bottom: 6px; font-size: 13px; letter-spacing: 0.5px; }
+    .skill-category span { color: #bbb; font-size: 14px; line-height: 1.6; }
 
-        .download-section {
-            text-align: center;
-            padding: 30px 40px;
-            background: #f8f9fa;
-            border-bottom: 3px solid #e9ecef;
-        }
+    /* experience / project / education items */
+    .exp-item, .proj-item, .edu-item {
+      margin-bottom: 22px; padding: 20px 22px;
+      background: rgba(16,2,2,0.65); border: 1px solid rgba(204,34,34,0.15);
+      border-left: 3px solid #cc2222; border-radius: 10px;
+      transition: all 0.25s;
+    }
+    .exp-item:hover, .proj-item:hover, .edu-item:hover {
+      transform: translateX(5px); border-color: rgba(204,34,34,0.45);
+      box-shadow: 0 6px 20px rgba(204,34,34,0.15);
+    }
+    .job-title, .proj-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .company, .school { color: #cc2222; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .date { color: #666; font-style: italic; font-size: 13px; margin-bottom: 10px; }
+    .degree { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
 
-        .download-btn {
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-            transition: all 0.3s ease;
-            animation: fadeIn 1s ease-out 0.9s both;
-        }
+    .exp-item ul, .proj-item ul {
+      margin-left: 18px; color: #999; line-height: 1.8; font-size: 14px;
+    }
+    .exp-item li, .proj-item li { margin-bottom: 6px; }
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-  background: linear-gradient(160deg, #051622, #0c2e35, #1ba098);
-        }
+    .proj-link { color: #cc2222; text-decoration: none; font-weight: 600; }
+    .proj-link:hover { color: #e03030; text-decoration: underline; }
 
-        .download-btn:active {
-            transform: translateY(-1px);
-        }
+    /* cert / achievement */
+    .cert-list, .achievement-list {
+      margin-left: 18px; line-height: 2.1; color: #999; font-size: 14px;
+    }
+    .cert-list li, .achievement-list li {
+      margin-bottom: 8px; transition: transform 0.25s;
+    }
+    .cert-list li:hover, .achievement-list li:hover { transform: translateX(5px); color: #ddd; }
+    .achievement-list strong { color: #cc2222; }
 
-        .content {
-            padding: 40px;
-        }
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(135deg,#0f0000 0%,#1a0505 40%,#220000 70%,#0a0a0a 100%);
+      border-top: 1px solid rgba(204,34,34,0.3); padding: 48px 48px 28px;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .footer-name { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #fff; margin-bottom: 6px; }
+    .footer-tagline { font-size: 13px; color: #cc2222; letter-spacing: 1px; margin-bottom: 24px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+    .footer-links a { color: #555; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: #cc2222; }
+    .footer-bar { width: 60px; height: 1px; background: rgba(204,34,34,0.35); margin: 0 auto 16px; }
+    .footer-copy { font-size: 12px; color: #333; }
+    .footer-copy span { color: #cc2222; }
 
-        .section {
-            margin-bottom: 40px;
-            opacity: 0;
-            animation: slideInLeft 0.6s ease-out forwards;
-        }
-
-        .section:nth-child(1) { animation-delay: 0.2s; }
-        .section:nth-child(2) { animation-delay: 0.4s; }
-        .section:nth-child(3) { animation-delay: 0.6s; }
-        .section:nth-child(4) { animation-delay: 0.8s; }
-        .section:nth-child(5) { animation-delay: 1s; }
-        .section:nth-child(6) { animation-delay: 1.2s; }
-        .section:nth-child(7) { animation-delay: 1.4s; }
-        .section:nth-child(8) { animation-delay: 1.6s; }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        h2 {
-            color: #667eea;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
-            display: inline-block;
-        }
-
-        .summary-text {
-            line-height: 1.8;
-            color: #555;
-            text-align: justify;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .skill-category {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .skill-category strong {
-            color: #667eea;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-
-        .experience-item, .project-item {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .experience-item:hover, .project-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .job-title, .project-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .company {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .date {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .experience-item ul, .project-item ul {
-            margin-left: 20px;
-            line-height: 1.8;
-            color: #555;
-            margin-top: 10px;
-        }
-
-        .experience-item li, .project-item li {
-            margin-bottom: 8px;
-        }
-
-        .project-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .project-link:hover {
-            text-decoration: underline;
-        }
-
-        .education-item {
-            margin-bottom: 20px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .education-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .degree {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .school {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .cert-list, .achievement-list {
-            margin-left: 20px;
-            line-height: 2;
-            color: #555;
-        }
-
-        .cert-list li, .achievement-list li {
-            margin-bottom: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .cert-list li:hover, .achievement-list li:hover {
-            transform: translateX(5px);
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .download-section {
-                display: none;
-            }
-            .container {
-                box-shadow: none;
-            }
-            .section {
-                page-break-inside: avoid;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            .subtitle {
-                font-size: 1em;
-            }
-            .content {
-                padding: 20px;
-            }
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { gap: 14px; }
+      .resume-header { padding: 36px 20px 24px; }
+      .resume-header h1 { font-size: 28px; }
+      .resume-content { padding: 24px 18px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .share-section { padding: 20px; gap: 10px; }
+      footer { padding: 30px 20px 20px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container" id="resume">
-        <div class="header">
-            <div class="header-content">
-                <h1>Madhumitha K</h1>
-                <p class="subtitle">Full Stack Developer & Machine Learning Engineer</p>
-                <div class="header-contact">
-                    Erode, Tamil Nadu | 📧 mithamadhu8785@gmail.com | 📱 +91 84385 77395
-                </div>
-                <div class="header-links">
-                    <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
-                    <a href="https://github.com" target="_blank">Github</a>
-                    <a href="https://leetcode.com" target="_blank">Leetcode</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="download-section">
-            <button class="download-btn" onclick="downloadResume()">
-                📥 Download Resume as PDF
-            </button>
-        </div>
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="snow-canvas"></canvas>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="toast">🔗 Link copied to clipboard!</div>
 
-        <div class="content">
-            <div class="section">
-                <h2>Professional Summary</h2>
-                <p class="summary-text">
-                    Versatile and detail-oriented Full Stack Developer and Machine Learning Engineer with hands-on experience in building scalable, responsive web applications and deploying intelligent ML models. Adept at integrating frontend and backend technologies with data-driven solutions.
-                </p>
-            </div>
-
-            <div class="section">
-                <h2>Technical Skills</h2>
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <strong>Languages:</strong>
-                        Python, JavaScript, TypeScript, SQL, Java
-                    </div>
-                    <div class="skill-category">
-                        <strong>Frontend:</strong>
-                        React.js, Next.js, HTML5, CSS3, Tailwind CSS, Redux
-                    </div>
-                    <div class="skill-category">
-                        <strong>Backend:</strong>
-                        Node.js, Express, Django, Flask, REST APIs, MERN-Stack
-                    </div>
-                    <div class="skill-category">
-                        <strong>ML/AI:</strong>
-                        TensorFlow, PyTorch, Scikit-learn, OpenCV, Pandas, NumPy
-                    </div>
-                    <div class="skill-category">
-                        <strong>Databases:</strong>
-                        MongoDB, PostgreSQL, MySQL, Firebase
-                    </div>
-                    <div class="skill-category">
-                        <strong>Tools & DevOps:</strong>
-                        Git, Docker, AWS, Linux, CI/CD, Jupyter Notebooks, Kubernetes
-                    </div>
-                    <div class="skill-category">
-                        <strong>Others:</strong>
-                        GraphQL, FastAPI, Rest API, Qwen, Nuextract, Langchain
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Professional Experience</h2>
-                
-                <div class="experience-item">
-                    <div class="job-title">Full Stack Developer (Intern)</div>
-                    <div class="company">Kalv – UK</div>
-                    <div class="date">Dec 2024 – Present</div>
-                    <ul>
-                        <li>Developed clean, responsive UI layouts using HTML5, CSS3, and Tailwind CSS for scalable web interfaces.</li>
-                        <li>Created interactive, dynamic components with JavaScript and React.js to enhance user experience.</li>
-                        <li>Utilized Flexbox and Grid for modern, mobile-friendly designs.</li>
-                        <li>Collaborated closely with backend developers for seamless REST API integrations.</li>
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <div class="job-title">Machine Learning Engineer (Intern)</div>
-                    <div class="company">Cube AI – Coimbatore</div>
-                    <div class="date">May 2024 – July 2024</div>
-                    <ul>
-                        <li>Designed a hospital availability detection system integrating real-time doctor status updates via ML models.</li>
-                        <li>Preprocessed large healthcare datasets using Pandas and deployed models using Scikit-learn.</li>
-                        <li>Developed and deployed a YOLOv5-based object detection system using OpenCV for security monitoring.</li>
-                        <li>Deployed ML models as REST APIs using Flask and Docker for scalable application services.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Projects</h2>
-                
-                <div class="project-item">
-                    <div class="project-title">Automatic Time Table - Smart India Hackathon (SIH) 2025</div>
-                    <ul>
-                        <li>Designed and implemented an AI/ML-driven platform to analyze real-time data, detect anomalies, and generate alerts for enhanced decision-making.</li>
-                        <li>Project selected in Top 50 out of 300 projects for SIH.</li>
-                        <li>Designed the frontend UI/UX for smooth user interaction.</li>
-                        <li>Integrated the solution with backend APIs and database.</li>
-                        <li><a href="https://youtu.be/lexotDdNTqY?si=ShCV19snhkY7SB4u" target="_blank" class="project-link">View Project Demo</a></li>
-                    </ul>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-title">Text-to-Image Generator</div>
-                    <ul>
-                        <li>Developed a deep learning model that generates images from text prompts using Diffusion Models / GANs.</li>
-                        <li>Implemented NLP preprocessing (tokenization, embeddings) to convert natural language input into visual features.</li>
-                        <li>Fine-tuned on curated datasets to produce high-quality and contextually accurate images.</li>
-                        <li>Built an interactive web app with Flask/React, enabling real-time text-to-image generation and downloads.</li>
-                    </ul>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-title">Voice-based Music Recommendation System</div>
-                    <ul>
-                        <li>Built an intelligent music recommendation system operating via voice interaction and NLP-based mood detection — similar to Alexa.</li>
-                        <li>When the similar person voice is recognized, based on the person mood it recommended the song from YouTube and similar sites.</li>
-                        <li>Built an Alexa-like conversational system that recommends music based on user mood and dialogue.</li>
-                        <li>Integrated NLP for conversation analysis and ML models for personalized recommendations.</li>
-                    </ul>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-title">Image Classifier</div>
-                    <ul>
-                        <li>Designed and trained a CNN for custom image classification tasks.</li>
-                        <li>Achieved 92% accuracy and deployed via FastAPI for public API access.</li>
-                    </ul>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-title">Bingo Game using Cursor AI</div>
-                    <ul>
-                        <li>Built a responsive, accessible UI using semantic HTML, modern CSS, and JavaScript—lightweight and framework-free.</li>
-                        <li>Developed in Cursor with GPT-5, focusing on scalable, maintainable code and planned features like multi-card support and sound effects.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Education</h2>
-                
-                <div class="education-item">
-                    <div class="degree">Bachelor of Engineering (B.E.) in Computer Science (AI & ML)</div>
-                    <div class="school">Dr. Mahalingam College of Engineering and Technology, Pollachi, Tamil Nadu</div>
-                    <div class="date">2023 – 2027 | CGPA: 8.3/10 (Semester-5)</div>
-                </div>
-
-                <div class="education-item">
-                    <div class="degree">Higher Secondary Certificate (HSC)</div>
-                    <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
-                    <div class="date">Percentage: 89%</div>
-                </div>
-
-                <div class="education-item">
-                    <div class="degree">Secondary School Leaving Certificate (SSLC)</div>
-                    <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
-                    <div class="date">Percentage: 84%</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Certifications</h2>
-                <ul class="cert-list">
-                    <li>Full Stack Web Development – Coursera / Udemy</li>
-                    <li>Python for Data Science and Machine Learning – Udemy</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2>Achievements</h2>
-                <ul class="achievement-list">
-                    <li><strong>3rd Prize Winner</strong> in Website Development (Frontend role) Competition at Dr. Mahalingam College of Engineering and Technology (2025)</li>
-                    <li><strong>3rd Prize</strong> by building a dynamic, responsive stock market web application using HTML, CSS, Python (backend), and MongoDB within a 2-hour timed challenge</li>
-                    <li><strong>1st Prize Winner (2 times)</strong> in Anna University Zoom 10 Technical Event</li>
-                    <li>Secured <strong>1st place</strong> in inter-college technical competitions organized by Anna University, showcasing strong problem-solving, web development, and coding skills</li>
-                </ul>
-            </div>
-        </div>
+  <!-- Site Header -->
+  <header>
+    <div>
+      <div class="brand-name">MADHUMITHA</div>
+      <div class="brand-sub">Full Stack · Machine Learning</div>
     </div>
+    <nav>
+      <a href="index.html">home</a>
+     
+    
+    </nav>
+  </header>
 
-    <script>
-        function downloadResume() {
-            const btn = document.querySelector('.download-btn');
-            const originalText = btn.textContent;
-            btn.textContent = '⏳ Generating PDF...';
-            btn.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                window.print();
-                btn.textContent = originalText;
-                btn.style.pointerEvents = 'auto';
-            }, 300);
-        }
+  <div class="page-wrapper">
+    <div class="resume-card" id="resume">
 
-        // Add subtle parallax effect on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            const scrolled = window.pageYOffset;
-            header.style.transform = `translateY(${scrolled * 0.3}px)`;
-        });
-    </script>
+      <!-- Resume Header -->
+      <div class="resume-header">
+        <div class="resume-header-inner">
+          <h1>Madhumitha K</h1>
+          <div class="subtitle">Full Stack Developer &amp; Machine Learning Engineer</div>
+          <div class="contact-info">
+            Erode, Tamil Nadu &nbsp;|&nbsp; mithamadhu8785@gmail.com &nbsp;|&nbsp; +91 84385 77395
+          </div>
+          <div class="header-links">
+            <a href="https://www.linkedin.com/in/madhu-mitha-8bb72b2a1/" target="_blank">LinkedIn</a>
+            <a href="https://github.com/Madhumgit" target="_blank">GitHub</a>
+            <a href="https://leetcode.com/u/madhuaiml01/" target="_blank">LeetCode</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share Section -->
+      <div class="share-section">
+        <span class="share-label">Share Resume</span>
+
+        <!-- Native share (mobile / supported browsers) -->
+        <button class="share-btn btn-native" id="nativeShareBtn" onclick="nativeShare()" title="Share">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share
+        </button>
+
+        <!-- Copy link -->
+        <button class="share-btn btn-copy" id="copyBtn" onclick="copyLink()" title="Copy link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copy Link
+        </button>
+
+        <!-- WhatsApp -->
+        <button class="share-btn btn-copy" onclick="shareWhatsApp()" title="Share on WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+          </svg>
+          WhatsApp
+        </button>
+
+        
+
+        <!-- LinkedIn -->
+        <button class="share-btn btn-copy" onclick="shareLinkedIn()" title="Share on LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          LinkedIn
+        </button>
+
+      </div>
+
+      <!-- Resume Content -->
+      <div class="resume-content">
+
+        <!-- Summary -->
+        <div class="section">
+          <h2>Professional Summary</h2>
+          <p class="summary-text">
+           A highly motivated developer focused on creating smart, efficient, and user-centric solutions through 
+           Full Stack and Machine Learning. Dedicated to continuous learning, problem-solving, and delivering impactful 
+           real-world applications. Committed to innovation, continuous improvement, and transforming ideas into meaningful technology.
+          </p>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+          <h2>Technical Skills</h2>
+          <div class="skills-grid">
+            <div class="skill-category"><strong>Frontend</strong><span>React.js, HTML5, CSS3, Tailwind CSS, Redux</span></div>
+            <div class="skill-category"><strong>Backend</strong><span>Node.js, Express, Django, Flask, REST APIs, MERN Stack</span></div>
+            <div class="skill-category"><strong>ML / LLM</strong><span>TensorFlow, PyTorch, Scikit-learn, OpenCV, Pandas, NumPy, Hugging Face Transformers, NLTK,SpaCy</span></div>
+            <div class="skill-category"><strong>Databases</strong><span>MongoDB, PostgreSQL, MySQL, Firebase, Supabase</span></div>
+             <div class="skill-category"><strong>Model Deployment:</strong><span>Flask, FastAPI ,Django, RestAPI, Render</span></div>
+             <div class="skill-category"><strong>Deep Learning Architectures</strong><span>CNN, RNN, LSTM, Transformer</span></div>
+            <div class="skill-category"><strong>Cloud &amp; DevOps</strong><span>Git, Docker, AWS,GCP, CI/CD, Jupyter, Kubernetes, Jenkins</span></div>
+            <div class="skill-category"><strong>Others</strong><span>GraphQL, FastAPI, Qwen, Nuextract, LangChain</span></div>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div class="section">
+          <h2>Professional Experience</h2>
+          <div class="exp-item">
+            <div class="job-title">Full Stack Developer (Intern)</div>
+            <div class="company">Kalv – UK</div>
+            <div class="date">Dec 2024 – Present</div>
+            <ul>
+              <li>Developed clean, responsive UI layouts using HTML5, CSS3, and Tailwind CSS for scalable web interfaces.</li>
+              <li>Created interactive, dynamic components with JavaScript and React.js to enhance user experience.</li>
+              <li>Utilized Flexbox and Grid for modern, mobile-friendly designs.</li>
+              <li>Collaborated closely with backend developers for seamless REST API integrations.</li>
+            </ul>
+          </div>
+          <div class="exp-item">
+            <div class="job-title">AI/ML (Intern)</div>
+            <div class="company">Appxcess-Coimbatore</div>
+            <div class="date">Oct 2025 – Jan 2026</div>
+            <ul>
+              <li>Worked on ML and deep learning models including CNN, RNN, and LSTM.</li>
+              <li>Applied NLP techniques for real-world problem solving.</li>
+              <li>Improved model accuracy through tuning and optimization.</li>
+              <li>Assisted in deploying ML models into functional applications.</li>
+            </ul>
+          </div>
+          <div class="exp-item">
+            <div class="job-title">Machine Learning Engineer (Intern)</div>
+            <div class="company">Cube AI – Coimbatore</div>
+            <div class="date">May 2024 – July 2024</div>
+            <ul>
+              <li>Designed a hospital availability detection system integrating real-time doctor status updates via ML models.</li>
+              <li>Preprocessed large healthcare datasets using Pandas and deployed models using Scikit-learn.</li>
+              <li>Developed and deployed a YOLOv5-based object detection system using OpenCV for security monitoring.</li>
+              <li>Deployed ML models as REST APIs using Flask and Docker for scalable application services.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="section">
+          <h2>Projects</h2>
+          <div class="proj-item">
+            <div class="proj-title">Automatic Time Table – Smart India Hackathon (SIH) 2025</div>
+            <ul>
+              <li>AI/ML-driven platform to analyze real-time data, detect anomalies, and generate scheduling alerts.</li>
+              <li>Project selected in Top 50 out of 300 submissions at SIH.</li>
+              <li>Designed the frontend UI/UX and integrated solution with backend APIs and database.</li>
+              <li><a href="https://youtu.be/lexotDdNTqY?si=ShCV19snhkY7SB4u" target="_blank" class="proj-link">View Project Demo →</a></li>
+            </ul>
+          </div>
+          <div class="proj-item">
+            <div class="proj-title">Text-to-Image Generator</div>
+            <ul>
+              <li>Deep learning model generating images from text prompts using Diffusion Models / GANs.</li>
+              <li>Implemented NLP preprocessing — tokenization and embeddings — to convert text into visual features.</li>
+              <li>Built interactive web app with Flask/React for real-time generation.</li>
+            </ul>
+          </div>
+          <div class="proj-item">
+            <div class="proj-title">Voice-based Music Recommendation System</div>
+            <ul>
+              <li>Intelligent music recommendation system via voice interaction and NLP-based mood detection.</li>
+              <li>Recommends songs from YouTube based on recognized voice + mood analysis.</li>
+              <li>Integrated NLP conversation analysis and ML models for personalized recommendations.</li>
+            </ul>
+          </div>
+          <div class="proj-item">
+            <div class="proj-title">MailMind AI (Email Assistant)</div>
+            <ul>
+              <li>Built an AI-powered email classifier and smart reply system.</li>
+              <li>Integrated Gmail API for auto-fetch and real-time synchronization.</li>
+              <li>Used TF-IDF and DistilBERT for classification and response generation.</li>
+              <li>Developed full stack app using Flask, React, Supabase, and cloud deployment.</li>
+              <li><a href="https://mailmind-agent.vercel.app/" target="_blank" class="proj-link">View Website →</a></li>
+
+            </ul>
+          </div>
+          <div class="proj-item">
+            <div class="proj-title">Bingo Game using Cursor AI</div>
+            <ul>
+              <li>Built responsive, accessible UI using semantic HTML, CSS, and JavaScript — framework-free.</li>
+              <li>Developed in Cursor with GPT integration, focused on scalable and maintainable code.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="section">
+          <h2>Education</h2>
+          <div class="edu-item">
+            <div class="degree">B.E. in Computer Science (AI &amp; ML)</div>
+            <div class="school">Dr. Mahalingam College of Engineering and Technology, Pollachi</div>
+            <div class="date">2023 – 2027 &nbsp;|&nbsp; CGPA: 8.3 / 10 (Semester 5)</div>
+          </div>
+          <div class="edu-item">
+            <div class="degree">Higher Secondary Certificate (HSC)</div>
+            <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
+            <div class="date">Percentage: 89%</div>
+          </div>
+          <div class="edu-item">
+            <div class="degree">Secondary School Leaving Certificate (SSLC)</div>
+            <div class="school">Adharsh Vidhayalaya Matric School, Bhavani</div>
+            <div class="date">Percentage: 84%</div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="section">
+          <h2>Certifications</h2>
+          <ul class="cert-list">
+            <li>Full Stack Web Development – Coursera / Udemy</li>
+            <li>Python for Data Science and Machine Learning – Udemy</li>
+            <li>Introduction to Machine Learning – Great Learning</li>
+            <li>Cloud DevOps Workshop – Skill Nation</li>
+          </ul>
+        </div>
+
+        <!-- Achievements -->
+        <div class="section">
+          <h2>Achievements</h2>
+          <ul class="achievement-list">
+            <li><strong>3rd Prize</strong> – Website Development Competition at Dr. Mahalingam College of Engineering &amp; Technology (2025)
+            – Built a dynamic stock market web app in a 2-hour challenge using HTML, CSS, Python, MongoDB</li>
+            <li><strong>1st Prize (×2)</strong> – Anna University Zoom 10 Technical Event</li>
+            <li>Secured <strong>1st place</strong> in inter-college technical competitions organized by Anna University</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-name">MADHUMITHA</div>
+      <div class="footer-tagline">AI · Machine Learning · Full Stack</div>
+      <div class="footer-links">
+        <a href="pages/Skill.html">Skills</a>
+        <a href="pages/project.html">Projects</a>
+        <a href="pages/experience.html">Experiments</a>
+        <a href="pages/cert.html">Certificates</a>
+        <a href="aboutme.html">About</a>
+      </div>
+      <div class="footer-bar"></div>
+      <div class="footer-copy">© 2025 <span>Madhumitha</span> · Built with passion &amp; code</div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script>
+  // ── 3D BACKGROUND ──────────────────────────────────────────────────
+  (function() {
+    const bgCanvas   = document.getElementById('bg-canvas');
+    const bgScene    = new THREE.Scene();
+    const bgCamera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+    bgRenderer.setSize(window.innerWidth, window.innerHeight);
+    bgRenderer.setPixelRatio(window.devicePixelRatio);
+    bgCamera.position.z = 6;
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(3.5, 0.6, 18, 80),
+      new THREE.MeshBasicMaterial({ color: 0x330000, wireframe: true, transparent: true, opacity: 0.18 })
+    );
+    torus.position.set(5, -1, -4); bgScene.add(torus);
+    const ico = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.8, 1),
+      new THREE.MeshBasicMaterial({ color: 0x550000, wireframe: true, transparent: true, opacity: 0.15 })
+    );
+    ico.position.set(-5, 2, -3); bgScene.add(ico);
+    const pPos = new Float32Array(350 * 3);
+    for (let i = 0; i < 350 * 3; i++) pPos[i] = (Math.random() - 0.5) * 24;
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    bgScene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ size: 0.04, color: 0xcc2222, transparent: true, opacity: 0.3 })));
+    for (let i = 0; i < 12; i++) {
+      const pts = [new THREE.Vector3((Math.random()-.5)*20,(Math.random()-.5)*14,(Math.random()-.5)*8),
+                   new THREE.Vector3((Math.random()-.5)*20,(Math.random()-.5)*14,(Math.random()-.5)*8)];
+      bgScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0x440000, transparent: true, opacity: 0.1 })));
+    }
+    let nx=0, ny=0;
+    window.addEventListener('mousemove', e => { nx=(e.clientX/window.innerWidth-.5)*.4; ny=(e.clientY/window.innerHeight-.5)*.3; });
+    (function animate() {
+      requestAnimationFrame(animate);
+      torus.rotation.x+=.003; torus.rotation.y+=.004;
+      ico.rotation.x+=.004; ico.rotation.z+=.003;
+      bgCamera.position.x+=(nx-bgCamera.position.x)*.03;
+      bgCamera.position.y+=(-ny-bgCamera.position.y)*.03;
+      bgCamera.lookAt(bgScene.position);
+      bgRenderer.render(bgScene, bgCamera);
+    })();
+    window.addEventListener('resize', () => {
+      bgRenderer.setSize(window.innerWidth, window.innerHeight);
+      bgCamera.aspect = window.innerWidth / window.innerHeight;
+      bgCamera.updateProjectionMatrix();
+    });
+  })();
+
+  // ── SNOW ──────────────────────────────────────────────────────────
+  (function() {
+    const sc=document.getElementById('snow-canvas'), ctx=sc.getContext('2d');
+    sc.width=window.innerWidth; sc.height=window.innerHeight;
+    const fl=Array.from({length:130},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:.8+Math.random()*2.2,s:.4+Math.random()*1.2,d:(Math.random()-.5)*.4,o:.15+Math.random()*.45}));
+    (function draw(){
+      ctx.clearRect(0,0,sc.width,sc.height);
+      fl.forEach(f=>{
+        ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${f.o})`; ctx.fill();
+        f.y+=f.s; f.x+=f.d;
+        if(f.y>sc.height+4){f.y=-4;f.x=Math.random()*sc.width;}
+        if(f.x>sc.width+4) f.x=-4; if(f.x<-4) f.x=sc.width+4;
+      });
+      requestAnimationFrame(draw);
+    })();
+    window.addEventListener('resize',()=>{sc.width=window.innerWidth;sc.height=window.innerHeight;});
+  })();
+
+  // ── CURSOR ──────────────────────────────────────────────────────
+  (function() {
+    const dot=document.getElementById('cursor-dot'), ring=document.getElementById('cursor-ring');
+    let mx=-100,my=-100,rx=-100,ry=-100;
+    window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>ring.classList.add('hovered'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('hovered'));
+    });
+    window.addEventListener('mousedown',()=>dot.classList.add('clicked'));
+    window.addEventListener('mouseup',()=>dot.classList.remove('clicked'));
+    window.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0';});
+    window.addEventListener('mouseenter',()=>{dot.style.opacity='1';ring.style.opacity='1';});
+  })();
+
+  // ── SHARE FUNCTIONS ────────────────────────────────────────────
+  const PAGE_URL   = window.location.href;
+  const PAGE_TITLE = 'Madhumitha K – Full Stack Developer & ML Engineer | Resume';
+  const PAGE_TEXT  = 'Check out Madhumitha K\'s resume – Full Stack Developer & Machine Learning Engineer.';
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  async function nativeShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: PAGE_TITLE, text: PAGE_TEXT, url: PAGE_URL });
+      } catch (e) { /* user cancelled */ }
+    } else {
+      copyLink();
+    }
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(PAGE_URL).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.classList.add('copied');
+      btn.querySelector('span') && (btn.querySelector('span').textContent = 'Copied!');
+      btn.innerHTML = btn.innerHTML.replace('Copy Link','Copied!');
+      showToast('🔗 Resume link copied to clipboard!');
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = btn.innerHTML.replace('Copied!','Copy Link');
+      }, 2500);
+    }).catch(() => showToast('Could not copy – please copy the URL manually.'));
+  }
+
+  function shareWhatsApp() {
+    const msg = encodeURIComponent(`${PAGE_TEXT}\n${PAGE_URL}`);
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+
+  function shareEmail() {
+    const sub = encodeURIComponent(PAGE_TITLE);
+    const body = encodeURIComponent(`${PAGE_TEXT}\n\n${PAGE_URL}`);
+    window.location.href = `mailto:?subject=${sub}&body=${body}`;
+  }
+
+  function shareLinkedIn() {
+    const url = encodeURIComponent(PAGE_URL);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+  }
+
+  // Hide native share btn if API not supported on desktop
+  if (!navigator.share) {
+    document.getElementById('nativeShareBtn').style.display = 'none';
+  }
+  </script>
 </body>
 </html>
